@@ -9,12 +9,20 @@ public class Student {
 	private String surname;
 	private String eMail;
 	private List<Course> listOfSubscribedCourse;
+	private Teacher tutor;
+	private String id;
+	private UniversityDB universityDB;
 
-	public Student(String name, String surname) {
+	public Student(String id, String name, String surname) {
+		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.eMail = this.name + "." + this.surname + "@uniMail.com";
 		listOfSubscribedCourse = new ArrayList<Course>();
+	}
+	
+	public String getId() {
+		return id;
 	}
 
 	public String getName() {
@@ -31,6 +39,14 @@ public class Student {
 
 	public List<Course> getListOfSubscribedCourse() {
 		return listOfSubscribedCourse;
+	}
+
+	public void sendTutorRequestToTeacher(String idTeacher) {
+		universityDB.createTutorRequest(this.id,idTeacher);
+	}
+
+	public Teacher getTutor() {
+		return tutor;
 	}
 
 }
