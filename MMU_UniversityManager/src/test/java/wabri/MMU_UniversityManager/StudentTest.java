@@ -16,21 +16,31 @@ public class StudentTest {
 	@Test
 	public void testNewStudentHaveAName() {
 		String name = "Test Name";
-		student = createNewTestStudent(name, "Surname");
+		student = createNewTestStudent(name, "", "");
 
 		assertEquals(name, student.getName());
 	}
 
+
 	@Test
 	public void testNewStudentHaveASurname() {
 		String surname = "Test Surname";
-		student = createNewTestStudent("Name", surname);
-		
+		student = createNewTestStudent("", surname, "");
+
 		assertEquals(surname, student.getSurname());
 	}
-	
-	private Student createNewTestStudent(String name, String surname) {
-		return new Student(name, surname);
+
+
+	@Test
+	public void testNewStudentHaveAnId() {
+		String id = "IdTest";
+		student = createNewTestStudent("", "", id);
+		
+		assertEquals(id, student.getId());
+	}
+
+	private Student createNewTestStudent(String name, String surname, String id) {
+		return new Student(name, surname, id);
 	}
 
 }
