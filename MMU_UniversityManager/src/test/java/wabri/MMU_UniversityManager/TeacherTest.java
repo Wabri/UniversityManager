@@ -45,11 +45,23 @@ public class TeacherTest {
 	
 	@Test
 	public void testAskMailWhenMailIsNull() {
-		teacher.askMail();
-		
-		assertEquals("Mail", teacher.getMail());
+		assertMailTeacher("Mail");
 	}
 
+	@Test
+	public void testAskMailWhenMailIsNotNull() {
+		String mail = "MailTest";
+		teacher.setMail(mail);
+		
+		assertMailTeacher(mail);
+	}
+
+	private void assertMailTeacher(String expected) {
+		teacher.askMail();
+		
+		assertEquals(expected, teacher.getMail());
+	}
+	
 	private Teacher createNewTestTeacher(String name, String surname, String id) {
 		return new Teacher(name, surname,id,mailService);
 	}
