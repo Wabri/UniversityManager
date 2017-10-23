@@ -4,10 +4,12 @@ public class Teacher {
 
 	private String name;
 	private String surname;
+	private String id;
 
-	public Teacher(String name, String surname) {
+	public Teacher(String name, String surname, String id) {
 		this.setName(name);
 		this.setSurname(surname);
+		this.setId(id);
 	}
 
 	public String getName() {
@@ -24,6 +26,14 @@ public class Teacher {
 
 	public void setSurname(String surname) {
 		this.surname = surname;
+	}
+
+	public String getId() {
+		return this.id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }
