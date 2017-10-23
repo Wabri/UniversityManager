@@ -56,7 +56,10 @@ public class StudentTest {
 		assertMailStudent(mail);
 	}
 	
-	
+	@Test
+	public void testNewStudentHaveNoTutor() {
+		assertEquals(null, student.getIdTutor());
+	}
 
 	private void assertMailStudent(String expected) {
 		student.askMail();	

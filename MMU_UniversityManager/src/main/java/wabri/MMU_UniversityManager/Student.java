@@ -7,6 +7,7 @@ public class Student {
 	private String id;
 	private MailService mailService;
 	private String mail;
+	private String idTutor;
 
 	public Student(String name, String surname, String id, MailService mailService) {
 		this.mailService = mailService;
@@ -51,6 +52,10 @@ public class Student {
 
 	public void setMail(String mail) {
 		this.mail = mail;
+	}
+
+	public String getIdTutor() {
+		return idTutor;
 	}
 
 }
