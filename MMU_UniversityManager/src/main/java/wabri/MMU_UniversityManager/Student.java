@@ -40,7 +40,9 @@ public class Student {
 	}
 
 	public void askMail() {
-		setMail(mailService.getMail(this));
+		if (mail == null) {
+			setMail(mailService.getMail(this));			
+		}
 	}
 
 	public String getMail() {

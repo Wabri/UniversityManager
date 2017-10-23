@@ -44,10 +44,23 @@ public class StudentTest {
 	}
 
 	@Test
-	public void testNewStudentHaveAMail() {
-		student.askMail();
+	public void testAskMailWhenMailIsNull() {
+		assertMailStudent("Mail");
+	}
+	
+	@Test
+	public void testAskMailWhenMailIsNotNull() {
+		String mail = "Test Mail";
+		student.setMail(mail);
 		
-		assertTrue(student.getMail()=="Mail");
+		assertMailStudent(mail);
+	}
+	
+	
+
+	private void assertMailStudent(String expected) {
+		student.askMail();	
+		assertEquals(expected, student.getMail());
 	}
 
 	private Student createNewTestStudent(String name, String surname, String id) {
