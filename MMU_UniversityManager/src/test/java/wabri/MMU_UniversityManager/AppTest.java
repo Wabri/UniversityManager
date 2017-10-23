@@ -1,4 +1,4 @@
-package wabri.MMU_PayRoll;
+package wabri.MMU_UniversityManager;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
