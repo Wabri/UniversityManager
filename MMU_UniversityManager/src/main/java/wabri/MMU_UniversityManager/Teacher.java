@@ -5,11 +5,14 @@ public class Teacher {
 	private String name;
 	private String surname;
 	private String id;
+	private String mail;
+	private MailService mailService;
 
-	public Teacher(String name, String surname, String id) {
+	public Teacher(String name, String surname, String id, MailService mailService) {
 		this.setName(name);
 		this.setSurname(surname);
 		this.setId(id);
+		this.mailService = mailService;
 	}
 
 	public String getName() {
@@ -34,6 +37,18 @@ public class Teacher {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public void askMail() {
+		setMail(mailService.getMail(this));
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
 	}
 
 }
