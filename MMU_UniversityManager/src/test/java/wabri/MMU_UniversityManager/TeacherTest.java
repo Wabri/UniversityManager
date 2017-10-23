@@ -16,10 +16,19 @@ public class TeacherTest {
 	
 	@Test
 	public void testNewTeacherHaveAName() {
-		String name = "name";
-		teacher = new Teacher(name);
+		String name = "Name";
+		teacher = createNewTestTeacher(name,"");
 		
 		assertEquals(name, teacher.getName());
 	}
 	
+	@Test
+	public void testNewTeacherHaveASurname() {
+		String surname = "Surname";
+		teacher = createNewTestTeacher("", surname);
+	}
+
+	private Teacher createNewTestTeacher(String name, String surname) {
+		return new Teacher(name,surname);
+	}
 }
