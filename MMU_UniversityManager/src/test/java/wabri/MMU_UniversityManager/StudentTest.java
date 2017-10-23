@@ -16,7 +16,7 @@ public class StudentTest {
 	@Test
 	public void testNewStudentHaveAName() {
 		String name = "Test Name";
-		student = new Student(name, "Surname");
+		student = createNewTestStudent(name, "Surname");
 
 		assertEquals(name, student.getName());
 	}
@@ -24,9 +24,13 @@ public class StudentTest {
 	@Test
 	public void testNewStudentHaveASurname() {
 		String surname = "Test Surname";
-		student = new Student("Name", surname);
+		student = createNewTestStudent("Name", surname);
 		
 		assertEquals(surname, student.getSurname());
+	}
+	
+	private Student createNewTestStudent(String name, String surname) {
+		return new Student(name, surname);
 	}
 
 }
