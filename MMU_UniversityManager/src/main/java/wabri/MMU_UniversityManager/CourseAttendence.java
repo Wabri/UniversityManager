@@ -27,5 +27,8 @@ public class CourseAttendence {
 	public void setCourse(Course course) {
 		this.course = course;
 	}
+	public String getIdCourse() {
+		return this.course.getId();
+	}
 
 }

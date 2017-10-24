@@ -18,7 +18,8 @@ public class CourseAttendenceTest {
 		course = mock(Course.class);
 		courseAttendence = createNewTestCourseAttendence(student,course);
 		
-		when(student.getId()).thenReturn("idTest");
+		when(student.getId()).thenReturn("idStudentTest");
+		when(course.getId()).thenReturn("idCourseTest");
 	}
 	
 	@Test
@@ -28,7 +29,7 @@ public class CourseAttendenceTest {
 	
 	@Test
 	public void testCourseAttendenceHasReferenceOfCourse() {
-		
+		assertEquals(course.getId(), courseAttendence.getIdCourse());
 	}
 
 	private CourseAttendence createNewTestCourseAttendence(Student student, Course course) {
