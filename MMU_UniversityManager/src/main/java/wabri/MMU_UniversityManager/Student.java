@@ -74,6 +74,15 @@ public class Student {
 	public void removeEnrolledCourse(String idCourse) throws Error{
 		if (enrolledCourse.isEmpty()) {
 			throw new Error();
+		} else {
+			int index = 0;
+			while(enrolledCourse.get(index) != null) {
+				if (idCourse == enrolledCourse.get(index).getId()) {
+					enrolledCourse.remove(index);
+					return;
+				}
+				index++;
+			}
 		}
 	}
 

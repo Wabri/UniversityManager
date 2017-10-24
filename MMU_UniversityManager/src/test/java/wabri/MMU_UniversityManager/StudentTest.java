@@ -82,6 +82,14 @@ public class StudentTest {
 		
 		assertEquals(0, student.getEnrolledCourse().size());
 	}
+	
+	@Test
+	public void testRemoveEnrolledCourseWhenListIsNotEmpty() {
+		student.addEnrolledCourse(createTestCourse("Id0"));
+		student.removeEnrolledCourse("Id0");
+		
+		assertEquals(0, student.getEnrolledCourse().size());
+	}
 
 	private Course createTestCourse(String id) {
 		return new Course(id,"NameCourseTest",createTestTeacher());
