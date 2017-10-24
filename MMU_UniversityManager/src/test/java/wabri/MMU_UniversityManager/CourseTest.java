@@ -11,12 +11,19 @@ public class CourseTest {
 	
 	@Before
 	public void init() {
-		course = new Course();
-	}
-	
-	@Test
-	public void test() {
-		fail("Not yet implemented");
+		course = createNewTestCourse("IDTest");
 	}
 
+	@Test
+	public void testNewCourseHaveAId() {
+		String id = "IDTest";
+		course = createNewTestCourse(id);
+		
+		assertEquals(id, course.getId());
+	}
+
+	private Course createNewTestCourse(String id) {
+		return new Course(id);
+	}
+	
 }
