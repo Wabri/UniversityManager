@@ -30,4 +30,8 @@ public class TutorRequest {
 		return this.student.getId();
 	}
 
+	public String getIdTeacher() {
+		return this.teacher.getId();
+	}
+
 }

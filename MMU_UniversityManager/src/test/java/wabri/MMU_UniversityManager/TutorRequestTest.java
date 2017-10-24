@@ -27,6 +27,11 @@ public class TutorRequestTest {
 		assertEquals(student.getId(), tutorRequest.getIdStudent());
 	}
 	
+	@Test
+	public void testTutorRequestHasReferenceOfTeacher() {
+		assertEquals(teacher.getId(), tutorRequest.getIdTeacher());
+	}
+	
 	private TutorRequest createNewTestTutorRequest(Teacher teacher, Student student) {
 		return new TutorRequest(teacher,student);
 	}
