@@ -71,4 +71,10 @@ public class Student {
 		enrolledCourse.add(course);
 	}
 
+	public void removeEnrolledCourse(String idCourse) throws Error{
+		if (enrolledCourse.isEmpty()) {
+			throw new Error();
+		}
+	}
+
 }

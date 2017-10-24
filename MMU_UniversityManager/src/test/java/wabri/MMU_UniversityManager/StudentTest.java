@@ -13,13 +13,11 @@ public class StudentTest {
 
 	private Student student;
 	private MailService mailService;
-	private List<Course> courses;
 
 	@Before
 	public void init() {
 		mailService = mock(MailService.class);
 		student = createNewTestStudent("Name", "Surname", "ID");
-		courses = new ArrayList<Course>();
 		
 		when(mailService.getMail(student)).thenReturn("Mail");
 	}
@@ -72,11 +70,17 @@ public class StudentTest {
 	}
 	
 	@Test
-	public void testSingleEnrolledCourse() {
-		courses.add(createTestCourse("IdCourseTest"));
-		student.addEnrolledCourse(courses.get(0));
+	public void testAddSingleEnrolledCourse() {
+		student.addEnrolledCourse(createTestCourse("IdCourseTest"));
 		
-		assertEquals(courses.size(), student.getEnrolledCourse().size());
+		assertEquals(1, student.getEnrolledCourse().size());
+	}
+	
+	@Test (expected = Error.class)
+	public void testRemoveEnrolledCourseWhenListIsEmptyThrowException() {
+		student.removeEnrolledCourse("idTest");
+		
+		assertEquals(0, student.getEnrolledCourse().size());
 	}
 
 	private Course createTestCourse(String id) {
