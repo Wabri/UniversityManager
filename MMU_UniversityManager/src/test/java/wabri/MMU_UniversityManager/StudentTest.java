@@ -76,7 +76,7 @@ public class StudentTest {
 		assertEquals(1, student.getEnrolledCourse().size());
 	}
 	
-	@Test (expected = Error.class)
+	@Test (expected = NoEnrolledCourseError.class)
 	public void testRemoveEnrolledCourseWhenListIsEmptyThrowException() {
 		student.removeEnrolledCourse("idTest");
 		
@@ -89,6 +89,14 @@ public class StudentTest {
 		student.removeEnrolledCourse("Id0");
 		
 		assertEquals(0, student.getEnrolledCourse().size());
+	}
+	
+	@Test (expected = IndexOutOfBoundsException.class)
+	public void testRemoveEnrolledCourseWhenIdIsNotRightThrowException() {
+		student.addEnrolledCourse(createTestCourse("Id0"));
+		student.removeEnrolledCourse("Id1");
+		
+		assertEquals(1, student.getEnrolledCourse().size());
 	}
 
 	private Course createTestCourse(String id) {
