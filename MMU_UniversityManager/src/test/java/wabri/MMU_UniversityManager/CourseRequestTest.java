@@ -1,0 +1,22 @@
+package wabri.MMU_UniversityManager;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class CourseRequestTest {
+	
+	private CourseRequest courseRequest;
+
+	@Before
+	public void init() {
+		courseRequest = new CourseRequest();
+	}
+	
+	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
+
+}
