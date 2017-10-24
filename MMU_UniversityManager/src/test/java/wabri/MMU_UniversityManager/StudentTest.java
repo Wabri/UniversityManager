@@ -3,6 +3,9 @@ package wabri.MMU_UniversityManager;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,11 +13,13 @@ public class StudentTest {
 
 	private Student student;
 	private MailService mailService;
+	private List<Course> courses;
 
 	@Before
 	public void init() {
 		mailService = mock(MailService.class);
 		student = createNewTestStudent("Name", "Surname", "ID");
+		courses = new ArrayList<Course>();
 		
 		when(mailService.getMail(student)).thenReturn("Mail");
 	}
@@ -59,6 +64,11 @@ public class StudentTest {
 	@Test
 	public void testNewStudentHaveNoTutor() {
 		assertEquals(null, student.getIdTutor());
+	}
+	
+	@Test
+	public void testNoEnrolledCourse() {
+		assertTrue(student.getEnrolledCourse().isEmpty());
 	}
 
 	private void assertMailStudent(String expected) {
