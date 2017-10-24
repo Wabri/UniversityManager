@@ -23,8 +23,13 @@ public class CourseRequestTest {
 	}
 	
 	@Test
-	public void testNewCourseRequestHaveReferenceIdStudent() {		
+	public void testNewCourseRequestHasReferenceIdStudent() {		
 		assertEquals(student.getId(), courseRequest.getIdStudent());
+	}
+	
+	@Test
+	public void testNewCourseRequestHasReferenceIdCourse() {
+		assertEquals(course.getId(), courseRequest.getIdCourse());
 	}
 	
 	private CourseRequest createTestCourseRequest(Student student, Course course) {

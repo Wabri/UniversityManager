@@ -10,10 +10,6 @@ public class CourseRequest {
 		this.setCourse(course);
 	}
 
-	public String getIdStudent() {
-		return this.student.getId();
-	}
-
 	public Course getCourse() {
 		return course;
 	}
@@ -28,6 +24,14 @@ public class CourseRequest {
 
 	public void setStudent(Student student) {
 		this.student = student;
+	}
+	
+	public String getIdStudent() {
+		return this.student.getId();
+	}
+
+	public String getIdCourse() {
+		return this.course.getId();
 	}
 
 }
