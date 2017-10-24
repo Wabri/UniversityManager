@@ -4,10 +4,12 @@ public class Course {
 
 	private String id;
 	private String name;
+	private Teacher teacher;
 
-	public Course(String id, String name) {
+	public Course(String id, String name, Teacher teacher) {
 		this.setId(id);
 		this.setName(name);
+		this.setTeacher(teacher);
 	}
 
 	public String getId() {
@@ -24,6 +26,18 @@ public class Course {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+
+	public String getMail() {
+		return teacher.getMail();
 	}
 
 }

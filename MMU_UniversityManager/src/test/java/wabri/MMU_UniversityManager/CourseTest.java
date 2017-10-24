@@ -1,6 +1,7 @@
 package wabri.MMU_UniversityManager;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,10 +9,12 @@ import org.junit.Test;
 public class CourseTest {
 
 	private Course course;
+	private Teacher teacher;
 	
 	@Before
 	public void init() {
-		course = createNewTestCourse("IDTest");
+		teacher = mock(Teacher.class);
+		course = createNewTestCourse("ID","name",teacher);
 	}
 
 	@Test
@@ -30,12 +33,24 @@ public class CourseTest {
 		assertEquals(name, course.getName());
 	}
 
+	@Test
+	public void testMailOfCourseIsTheTeacherMail() {
+		String mail = "Mail";
+		when(teacher.getMail()).thenReturn(mail);
+		
+		assertEquals(mail, course.getMail());
+	}
+	
 	private Course createNewTestCourse(String id, String name) {
-		return new Course(id,name);
+		return new Course(id,name, null);
 	}
 
 	private Course createNewTestCourse(String id) {
-		return new Course(id, "");
+		return new Course(id, "", null);
+	}
+	
+	private Course createNewTestCourse(String id, String name, Teacher teacher) {
+		return new Course(id, name, teacher);
 	}
 	
 }
