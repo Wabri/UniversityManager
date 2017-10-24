@@ -21,9 +21,21 @@ public class CourseTest {
 		
 		assertEquals(id, course.getId());
 	}
+	
+	@Test
+	public void testNewCourseHaveAName() {
+		String name = "nameTest";
+		course = createNewTestCourse("",name);
+		
+		assertEquals(name, course.getName());
+	}
+
+	private Course createNewTestCourse(String id, String name) {
+		return new Course(id,name);
+	}
 
 	private Course createNewTestCourse(String id) {
-		return new Course(id);
+		return new Course(id, "");
 	}
 	
 }
