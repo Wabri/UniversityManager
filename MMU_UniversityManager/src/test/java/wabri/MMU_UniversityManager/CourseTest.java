@@ -35,10 +35,18 @@ public class CourseTest {
 
 	@Test
 	public void testMailOfCourseIsTheTeacherMail() {
-		String mail = "Mail";
+		String mail = "MailTest";
 		when(teacher.getMail()).thenReturn(mail);
 		
 		assertEquals(mail, course.getMail());
+	}
+	
+	@Test
+	public void testCourseHaveCanGetIdTeacher() {
+		String id = "idTeacherTest";
+		when(teacher.getId()).thenReturn(id);
+		
+		assertEquals(id, course.getIdTeacher());
 	}
 	
 	private Course createNewTestCourse(String id, String name) {

@@ -40,4 +40,8 @@ public class Course {
 		return teacher.getMail();
 	}
 
+	public String getIdTeacher() {
+		return teacher.getId();
+	}
+
 }
