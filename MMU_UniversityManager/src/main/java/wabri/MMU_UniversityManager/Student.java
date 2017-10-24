@@ -67,4 +67,8 @@ public class Student {
 		return enrolledCourse;
 	}
 
+	public void addEnrolledCourse(Course course) {
+		enrolledCourse.add(course);
+	}
+
 }

@@ -70,6 +70,22 @@ public class StudentTest {
 	public void testNoEnrolledCourse() {
 		assertTrue(student.getEnrolledCourse().isEmpty());
 	}
+	
+	@Test
+	public void testSingleEnrolledCourse() {
+		courses.add(createTestCourse("IdCourseTest"));
+		student.addEnrolledCourse(courses.get(0));
+		
+		assertEquals(courses.size(), student.getEnrolledCourse().size());
+	}
+
+	private Course createTestCourse(String id) {
+		return new Course(id,"NameCourseTest",createTestTeacher());
+	}
+
+	private Teacher createTestTeacher() {
+		return new Teacher("nameTeacherTest", "surnameTeacherTest", "IdTeacherTest", mailService);
+	}
 
 	private void assertMailStudent(String expected) {
 		student.askMail();	
