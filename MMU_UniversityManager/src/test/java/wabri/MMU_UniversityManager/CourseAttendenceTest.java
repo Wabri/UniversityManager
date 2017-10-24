@@ -10,13 +10,13 @@ public class CourseAttendenceTest {
 
 	private CourseAttendence courseAttendence;
 	private Student student;
-	private Teacher teacher;
+	private Course course;
 	
 	@Before
 	public void init() {
 		student=mock(Student.class);
-		teacher = mock(Teacher.class);
-		courseAttendence = createNewTestCourseAttendence(student,teacher);
+		course = mock(Course.class);
+		courseAttendence = createNewTestCourseAttendence(student,course);
 		
 		when(student.getId()).thenReturn("idTest");
 	}
@@ -25,9 +25,14 @@ public class CourseAttendenceTest {
 	public void testCourseAttendenceHasReferenceOfStudent() {
 		assertEquals(student.getId(), courseAttendence.getIdStudent());
 	}
+	
+	@Test
+	public void testCourseAttendenceHasReferenceOfCourse() {
+		
+	}
 
-	private CourseAttendence createNewTestCourseAttendence(Student student, Teacher teacher) {
-		return new CourseAttendence(student, teacher);
+	private CourseAttendence createNewTestCourseAttendence(Student student, Course course) {
+		return new CourseAttendence(student, course);
 	}
 
 }

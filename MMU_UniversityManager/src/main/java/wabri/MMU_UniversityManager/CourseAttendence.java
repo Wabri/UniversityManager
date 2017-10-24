@@ -3,21 +3,12 @@ package wabri.MMU_UniversityManager;
 public class CourseAttendence {
 
 	private Student student;
-	private Teacher teacher;
+	private Course course;
 
-	public CourseAttendence(Student student, Teacher teacher) {
+	public CourseAttendence(Student student, Course course) {
 		this.setStudent(student);
-		this.setTeacher(teacher);
+		this.setCourse(course);		
 	}
-
-	public Teacher getTeacher() {
-		return teacher;
-	}
-
-	public void setTeacher(Teacher teacher) {
-		this.teacher = teacher;
-	}
-
 	public Student getStudent() {
 		return student;
 	}
@@ -28,6 +19,13 @@ public class CourseAttendence {
 
 	public String getIdStudent() {
 		return this.student.getId();
+	}
+	
+	public Course getCourse() {
+		return course;
+	}
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 
 }
