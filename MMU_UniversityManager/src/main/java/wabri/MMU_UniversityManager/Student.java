@@ -12,12 +12,14 @@ public class Student {
 	private String idTutor;
 	private List<Course> enrolledCourse;
 	private MailService mailService;
+	private UniversityDB universityDB;
 
-	public Student(String name, String surname, String id, MailService mailService) {
+	public Student(String name, String surname, String id, MailService mailService, UniversityDB universityDB) {
 		this.setName(name);
 		this.setSurname(surname);
 		this.setId(id);
 		this.mailService = mailService;
+		this.universityDB = universityDB;
 		enrolledCourse = new ArrayList<Course>();
 	}
 
@@ -62,6 +64,10 @@ public class Student {
 	public String getIdTutor() {
 		return idTutor;
 	}
+	
+	public void setIdTutor(String idTutor) {
+		this.idTutor = idTutor;
+	}
 
 	public List<Course> getEnrolledCourse() {
 		return enrolledCourse;
@@ -84,6 +90,10 @@ public class Student {
 				index++;
 			}
 		}
+	}
+
+	public void sendTutorRequest(String idTeacher) {
+		universityDB.studentAskTutor(this,idTeacher);
 	}
 
 }

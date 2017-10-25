@@ -3,20 +3,22 @@ package wabri.MMU_UniversityManager;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 public class StudentTest {
 
 	private Student student;
 	private MailService mailService;
+	private UniversityDB universityDB;
 
 	@Before
 	public void init() {
 		mailService = mock(MailService.class);
+		universityDB = mock(UniversityDB.class);
 		student = createNewTestStudent("Name", "Surname", "ID");
 
 		when(mailService.getMail(student)).thenReturn("Mail");
@@ -33,7 +35,7 @@ public class StudentTest {
 		assertEquals(surname, student.getSurname());
 		assertEquals(id, student.getId());
 	}
-	
+
 	@Test
 	public void testAskMailWhenMailIsNull() {
 		assertMailStudent("Mail");
@@ -48,7 +50,7 @@ public class StudentTest {
 	}
 
 	@Test
-	public void testNewStudentHaveNoTutor() {
+	public void testNewStudentHasNoTutor() {
 		assertEquals(null, student.getIdTutor());
 	}
 
@@ -94,17 +96,35 @@ public class StudentTest {
 		student.addEnrolledCourse(createTestCourse("ID0"));
 		student.addEnrolledCourse(createTestCourse("ID1"));
 		student.removeEnrolledCourse("ID1");
-		
+
 		assertEquals(1, student.getEnrolledCourse().size());
 		assertEquals("ID0", student.getEnrolledCourse().get(0).getId());
 	}
 
-	private Course createTestCourse(String id) {
-		return new Course(id, "NameCourseTest", createTestTeacher());
+	@Test
+	public void testSendTutorRequestToDB() {
+		String idTeacher = "Id0";
+		Teacher tutor = createTestTeacher(idTeacher);
+		
+		doAnswer(new Answer<Void>() {
+			public Void answer (InvocationOnMock invocation) {
+				Object[] args = invocation.getArguments();
+				((Student) args[0]).setIdTutor((String) args[1]);
+				return null;
+			}
+		}).when(universityDB).studentAskTutor(student, idTeacher);
+		
+		student.sendTutorRequest(idTeacher);
+		
+		assertEquals(tutor.getId(), student.getIdTutor());
 	}
 
-	private Teacher createTestTeacher() {
-		return new Teacher("nameTeacherTest", "surnameTeacherTest", "IdTeacherTest", mailService);
+	private Course createTestCourse(String id) {
+		return new Course(id, "NameCourseTest", createTestTeacher("IdTeacherTest"));
+	}
+
+	private Teacher createTestTeacher(String idTeacher) {
+		return new Teacher("nameTeacherTest", "surnameTeacherTest", idTeacher, mailService);
 	}
 
 	private void assertMailStudent(String expected) {
@@ -113,7 +133,7 @@ public class StudentTest {
 	}
 
 	private Student createNewTestStudent(String name, String surname, String id) {
-		return new Student(name, surname, id, mailService);
+		return new Student(name, surname, id, mailService, universityDB);
 	}
 
 }
