@@ -18,89 +18,89 @@ public class StudentTest {
 	public void init() {
 		mailService = mock(MailService.class);
 		student = createNewTestStudent("Name", "Surname", "ID");
-		
+
 		when(mailService.getMail(student)).thenReturn("Mail");
 	}
 
 	@Test
-	public void testNewStudentHaveAName() {
+	public void testNewStudentHaveData() {
 		String name = "Test Name";
-		student = createNewTestStudent(name, "", "");
+		String surname = "Test Surname";
+		String id = "IdTest";
+		student = createNewTestStudent(name, surname, id);
 
 		assertEquals(name, student.getName());
-	}
-
-	@Test
-	public void testNewStudentHaveASurname() {
-		String surname = "Test Surname";
-		student = createNewTestStudent("", surname, "");
-
 		assertEquals(surname, student.getSurname());
-	}
-
-	@Test
-	public void testNewStudentHaveAnId() {
-		String id = "IdTest";
-		student = createNewTestStudent("", "", id);
-
 		assertEquals(id, student.getId());
 	}
-
+	
 	@Test
 	public void testAskMailWhenMailIsNull() {
 		assertMailStudent("Mail");
 	}
-	
+
 	@Test
 	public void testAskMailWhenMailIsNotNull() {
 		String mail = "Test Mail";
 		student.setMail(mail);
-		
+
 		assertMailStudent(mail);
 	}
-	
+
 	@Test
 	public void testNewStudentHaveNoTutor() {
 		assertEquals(null, student.getIdTutor());
 	}
-	
+
 	@Test
-	public void testNoEnrolledCourse() {
+	public void testNewStudentHasNoEnrolledCourse() {
 		assertTrue(student.getEnrolledCourse().isEmpty());
 	}
-	
+
 	@Test
 	public void testAddSingleEnrolledCourse() {
-		student.addEnrolledCourse(createTestCourse("IdCourseTest"));
-		
+		String id = "IdCourseTest";
+		student.addEnrolledCourse(createTestCourse(id));
+
 		assertEquals(1, student.getEnrolledCourse().size());
+		assertEquals(id, student.getEnrolledCourse().get(0).getId());
 	}
-	
-	@Test (expected = NoEnrolledCourseError.class)
+
+	@Test(expected = NoEnrolledCourseError.class)
 	public void testRemoveEnrolledCourseWhenListIsEmptyThrowException() {
 		student.removeEnrolledCourse("idTest");
-		
+
 		assertEquals(0, student.getEnrolledCourse().size());
 	}
-	
+
 	@Test
 	public void testRemoveEnrolledCourseWhenListIsNotEmpty() {
 		student.addEnrolledCourse(createTestCourse("Id0"));
 		student.removeEnrolledCourse("Id0");
-		
+
 		assertEquals(0, student.getEnrolledCourse().size());
 	}
-	
-	@Test (expected = IndexOutOfBoundsException.class)
+
+	@Test(expected = IndexOutOfBoundsException.class)
 	public void testRemoveEnrolledCourseWhenIdIsNotRightThrowException() {
 		student.addEnrolledCourse(createTestCourse("Id0"));
 		student.removeEnrolledCourse("Id1");
-		
+
 		assertEquals(1, student.getEnrolledCourse().size());
 	}
 
+	@Test
+	public void testRemoveEnrolledCourseStopWhenFindTheRightCourse() {
+		student.addEnrolledCourse(createTestCourse("ID0"));
+		student.addEnrolledCourse(createTestCourse("ID1"));
+		student.removeEnrolledCourse("ID1");
+		
+		assertEquals(1, student.getEnrolledCourse().size());
+		assertEquals("ID0", student.getEnrolledCourse().get(0).getId());
+	}
+
 	private Course createTestCourse(String id) {
-		return new Course(id,"NameCourseTest",createTestTeacher());
+		return new Course(id, "NameCourseTest", createTestTeacher());
 	}
 
 	private Teacher createTestTeacher() {
@@ -108,7 +108,7 @@ public class StudentTest {
 	}
 
 	private void assertMailStudent(String expected) {
-		student.askMail();	
+		student.askMail();
 		assertEquals(expected, student.getMail());
 	}
 
