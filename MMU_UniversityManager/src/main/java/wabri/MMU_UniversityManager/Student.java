@@ -100,4 +100,8 @@ public class Student {
 		}
 	}
 
+	public void sendTutorRemoveRequest() {
+		universityDB.studentRemoveTutor(this);
+	}
+
 }

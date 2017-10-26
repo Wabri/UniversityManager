@@ -124,6 +124,27 @@ public class StudentTest {
 		assertTutorRequest(idTutor);
 	}
 	
+	@Test
+	public void testSendTutorRemoveToDB() {
+		student.setIdTutor(teacher.getId());
+		
+		doAnswer(new Answer<Void>() {
+			public Void answer (InvocationOnMock invocation) {
+				Object[] args = invocation.getArguments();
+				((Student)args[0]).setIdTutor(null);
+				return null;
+			}
+		}).when(universityDB).studentRemoveTutor(student);
+		
+		assertTutorRemoveRequest();
+	}
+
+	private void assertTutorRemoveRequest() {
+		student.sendTutorRemoveRequest();
+		
+		assertEquals(null, student.getIdTutor());
+	}
+	
 	private void assertTutorRequest(String expected) {
 		student.sendTutorRequest(teacher.getId());
 		
