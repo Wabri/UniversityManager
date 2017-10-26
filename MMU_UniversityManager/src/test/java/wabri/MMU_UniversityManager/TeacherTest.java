@@ -66,7 +66,22 @@ public class TeacherTest {
 		
 		assertEquals(0, teacher.getListCoursesTeach().size());
 	}
-
+	
+	@Test (expected = NoTeachCoursesError.class)
+	public void testRemoveTeachCourseWhenListIsEmpty() {
+		teacher.removeCourseTeach("idCourse");
+		
+		assertEquals(0, teacher.getListCoursesTeach().size());
+	}
+	
+	@Test (expected = IndexOutOfBoundsException.class)
+	public void testRemoveTeachCourseWhenIdOfCourseIsNotRight() {
+		teacher.addCourseTeach(course);
+		teacher.removeCourseTeach("idError");
+		
+		assertEquals(1, teacher.getListCoursesTeach().size());
+	}
+	
 	private Course createNewCourse() {
 		return new Course("idCourseTest", "nameCourseTest", teacher);
 	}
