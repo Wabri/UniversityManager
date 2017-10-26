@@ -46,14 +46,15 @@ public class StudentTest {
 				return null;
 			}
 		}).when(universityDB).studentRemoveTutor(student);
-		
+
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) {
 				Object[] args = invocation.getArguments();
 				coursesRequested.add(new CourseRequest(((Student) args[0]), courseRequested));
 				return null;
 			}
-		}).doThrow(RequestAlreadyActive.class).when(universityDB).studentRequestCourse(student, courseRequested.getId());
+		}).doThrow(RequestAlreadyActive.class).when(universityDB).studentRequestCourse(student,
+				courseRequested.getId());
 	}
 
 	@Test
@@ -170,10 +171,10 @@ public class StudentTest {
 	public void testDuplicateRequestCourseToDBThrowError() {
 		String idCourse = "idTestCourse";
 		courseRequested = createTestCourse(idCourse);
-		
+
 		student.requestCourse(idCourse);
 		student.requestCourse(idCourse);
-		
+
 		verify(universityDB, times(2)).studentRequestCourse(student, idCourse);
 		assertEquals(1, coursesRequested.size());
 	}
