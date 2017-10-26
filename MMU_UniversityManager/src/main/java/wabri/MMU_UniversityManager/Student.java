@@ -106,8 +106,12 @@ public class Student {
 		universityDB.studentRemoveTutor(this);
 	}
 
-	public void requestCourse(String idCourse) {
+	public void requestEnrollingCourse(String idCourse) {
 		universityDB.studentRequestCourse(this,idCourse);
+	}
+
+	public void requestRemoveEnrolledCourse(String idCourse) {
+		universityDB.studentRemoveCourse(this, idCourse);
 	}
 
 }

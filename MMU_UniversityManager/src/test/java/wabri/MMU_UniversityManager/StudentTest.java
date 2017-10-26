@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -18,7 +17,7 @@ public class StudentTest {
 	private MailService mailService;
 	private UniversityDB universityDB;
 	private Teacher teacher;
-	private Course courseRequested;
+	private Course course;
 	private List<CourseRequest> coursesRequested;
 
 	@Before
@@ -27,7 +26,7 @@ public class StudentTest {
 		universityDB = mock(UniversityDB.class);
 		student = createNewTestStudent("Name", "Surname", "ID");
 		teacher = createTestTeacher("Id0");
-		courseRequested = createTestCourse("idTestCourse");
+		course = createTestCourse("idTestCourse");
 		coursesRequested = new ArrayList<CourseRequest>();
 
 		when(mailService.getMail(student)).thenReturn("Mail");
@@ -48,7 +47,9 @@ public class StudentTest {
 			}
 		}).when(universityDB).studentRemoveTutor(student);
 
-		universityDBDoAnswerWithCourseRequest(courseRequested);
+		universityDBDoAnswerWithCourseRequest(course);
+		
+		universityDBDoAnswerWithCourseRemoveRequest(course.getId());
 	}
 
 	@Test
@@ -155,19 +156,19 @@ public class StudentTest {
 
 	@Test
 	public void testRequestCourseToDB() {
-		student.requestCourse(courseRequested.getId());
+		student.requestEnrollingCourse(course.getId());
 
 		assertEquals(1, coursesRequested.size());
-		assertEquals(courseRequested.getId(), coursesRequested.get(0).getIdCourse());
+		assertEquals(course.getId(), coursesRequested.get(0).getIdCourse());
 	}
 
 	@Test(expected = RequestAlreadyActive.class)
 	public void testDuplicateRequestCourseToDBThrowError() {
 		String idCourse = "idTestCourse";
-		courseRequested = createTestCourse(idCourse);
+		course = createTestCourse(idCourse);
 
-		student.requestCourse(idCourse);
-		student.requestCourse(idCourse);
+		student.requestEnrollingCourse(idCourse);
+		student.requestEnrollingCourse(idCourse);
 
 		verify(universityDB, times(2)).studentRequestCourse(student, idCourse);
 		assertEquals(1, coursesRequested.size());
@@ -181,12 +182,34 @@ public class StudentTest {
 
 		universityDBDoAnswerWithCourseRequest(courseRequested0[1]);
 
-		student.requestCourse(courseRequested0[0].getId());
-		student.requestCourse(courseRequested0[1].getId());
+		student.requestEnrollingCourse(courseRequested0[0].getId());
+		student.requestEnrollingCourse(courseRequested0[1].getId());
 
 		assertEquals(2, coursesRequested.size());
 		assertEquals(courseRequested0[0].getId(), coursesRequested.get(0).getIdCourse());
 		assertEquals(courseRequested0[1].getId(), coursesRequested.get(1).getIdCourse());
+	}
+
+	@Test
+	public void testStudentWantToRemoveEnrolledCourse() {
+		String id = course.getId();
+		student.addEnrolledCourse(createTestCourse(id));
+
+		student.requestRemoveEnrolledCourse(id);
+
+		verify(universityDB, times(1)).studentRemoveCourse(student, id);
+
+		assertEquals(0, student.getEnrolledCourse().size());
+	}
+
+	private void universityDBDoAnswerWithCourseRemoveRequest(String idCourseToRemove) {
+		doAnswer(new Answer<Void>() {
+			public Void answer(InvocationOnMock invocation) {
+				Object[] args = invocation.getArguments();
+				((Student) args[0]).removeEnrolledCourse((String) args[1]);
+				return null;
+			}
+		}).when(universityDB).studentRemoveCourse(student, idCourseToRemove);
 	}
 
 	private void universityDBDoAnswerWithCourseRequest(Course withCourseRequested) {
@@ -196,7 +219,8 @@ public class StudentTest {
 				coursesRequested.add(new CourseRequest(((Student) args[0]), withCourseRequested));
 				return null;
 			}
-		}).doThrow(RequestAlreadyActive.class).when(universityDB).studentRequestCourse(student, withCourseRequested.getId());
+		}).doThrow(RequestAlreadyActive.class).when(universityDB).studentRequestCourse(student,
+				withCourseRequested.getId());
 	}
 
 	private void assertTutorRemoveRequest() {

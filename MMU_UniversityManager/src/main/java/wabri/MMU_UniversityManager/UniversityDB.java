@@ -8,4 +8,6 @@ public interface UniversityDB {
 
 	void studentRequestCourse(Student student, String idCourse);
 
+	void studentRemoveCourse(Student student, String id);
+
 }
