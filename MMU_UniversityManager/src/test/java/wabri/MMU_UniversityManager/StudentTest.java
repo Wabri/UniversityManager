@@ -17,6 +17,8 @@ public class StudentTest {
 	private MailService mailService;
 	private UniversityDB universityDB;
 	private Teacher teacher;
+	private Course courseRequested;
+	private List<CourseRequest> coursesRequested;
 
 	@Before
 	public void init() {
@@ -24,6 +26,8 @@ public class StudentTest {
 		universityDB = mock(UniversityDB.class);
 		student = createNewTestStudent("Name", "Surname", "ID");
 		teacher = createTestTeacher("Id0");
+		courseRequested = createTestCourse("idTestCourse");
+		coursesRequested = new ArrayList<CourseRequest>();
 
 		when(mailService.getMail(student)).thenReturn("Mail");
 
@@ -42,6 +46,14 @@ public class StudentTest {
 				return null;
 			}
 		}).when(universityDB).studentRemoveTutor(student);
+		
+		doAnswer(new Answer<Void>() {
+			public Void answer(InvocationOnMock invocation) {
+				Object[] args = invocation.getArguments();
+				coursesRequested.add(new CourseRequest(((Student) args[0]), courseRequested));
+				return null;
+			}
+		}).doThrow(RequestAlreadyActive.class).when(universityDB).studentRequestCourse(student, courseRequested.getId());
 	}
 
 	@Test
@@ -148,17 +160,6 @@ public class StudentTest {
 
 	@Test
 	public void testRequestCourseToDB() {
-		Course courseRequested = createTestCourse("idTestCourse");
-		List<CourseRequest> coursesRequested = new ArrayList<CourseRequest>();
-
-		doAnswer(new Answer<Void>() {
-			public Void answer(InvocationOnMock invocation) {
-				Object[] args = invocation.getArguments();
-				coursesRequested.add(new CourseRequest(((Student) args[0]), courseRequested));
-				return null;
-			}
-		}).when(universityDB).studentRequestCourse(student, courseRequested.getId());
-
 		student.requestCourse(courseRequested.getId());
 
 		assertEquals(1, coursesRequested.size());
@@ -166,14 +167,15 @@ public class StudentTest {
 	}
 
 	@Test(expected = RequestAlreadyActive.class)
-	public void testDoubleRequestCourseToDBThrowError() {
-		String idCourse = "";
-		
-		doThrow(RequestAlreadyActive.class).when(universityDB).studentRequestCourse(student, idCourse);
+	public void testDuplicateRequestCourseToDBThrowError() {
+		String idCourse = "idTestCourse";
+		courseRequested = createTestCourse(idCourse);
 		
 		student.requestCourse(idCourse);
+		student.requestCourse(idCourse);
 		
-		verify(universityDB, times(1)).studentRequestCourse(student, idCourse);
+		verify(universityDB, times(2)).studentRequestCourse(student, idCourse);
+		assertEquals(1, coursesRequested.size());
 	}
 
 	private void assertTutorRemoveRequest() {
