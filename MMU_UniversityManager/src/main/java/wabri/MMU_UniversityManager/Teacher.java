@@ -87,4 +87,12 @@ public class Teacher {
 		return tutoredStudents;
 	}
 
+	public void addTutoredStudent(Student student) throws OutOfLimitTutoredStudents{
+		if (tutoredStudents.size()<3) {
+			tutoredStudents.add(student);
+		} else {
+			throw new OutOfLimitTutoredStudents();
+		}
+	}
+
 }

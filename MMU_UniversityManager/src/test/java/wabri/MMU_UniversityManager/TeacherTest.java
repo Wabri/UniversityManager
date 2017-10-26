@@ -11,15 +11,18 @@ public class TeacherTest {
 	Teacher teacher;
 	private MailService mailService;
 	private Course course;
+	private Student student;
 
 	@Before
 	public void init() {
+		student = creteNewStudent("idStudentTest");
 		course = createNewCourse();
 		mailService = mock(MailService.class);
 		teacher = createNewTestTeacher("NameTest", "SurnameTest", "ID0");
 
 		when(mailService.getMail(teacher)).thenReturn("Mail");
 	}
+
 
 	@Test
 	public void testNewTeacherHasData() {
@@ -85,6 +88,27 @@ public class TeacherTest {
 	@Test
 	public void testNewTeacherHasNoTutoredStudents() {
 		assertEquals(0, teacher.getTutoredStudents().size());
+	}
+	
+	@Test (expected=OutOfLimitTutoredStudents.class)
+	public void testTutoredStudentsHasAMaximumOfThreeElements() {
+		String idStudent0 = "idStudentTest0";
+		teacher.addTutoredStudent(creteNewStudent(idStudent0));
+		String idStudent1 = "idStudentTest1";
+		teacher.addTutoredStudent(creteNewStudent(idStudent1));
+		String idStudent2 = "idStudentTest2";
+		teacher.addTutoredStudent(creteNewStudent(idStudent2));
+		String idStudent3 = "idStudentTest3";
+		teacher.addTutoredStudent(creteNewStudent(idStudent3));
+		
+		assertEquals(3, teacher.getTutoredStudents().size());
+		assertEquals(idStudent0, teacher.getTutoredStudents().get(0));
+		assertEquals(idStudent1, teacher.getTutoredStudents().get(1));
+		assertEquals(idStudent2, teacher.getTutoredStudents().get(2));
+	}
+	
+	private Student creteNewStudent(String idStudent) {
+		return new Student("nameStudentTest", "surnameStudentTest", idStudent, mailService);
 	}
 	
 	private Course createNewCourse() {
