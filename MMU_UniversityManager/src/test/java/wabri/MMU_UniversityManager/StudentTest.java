@@ -14,12 +14,14 @@ public class StudentTest {
 	private Student student;
 	private MailService mailService;
 	private UniversityDB universityDB;
+	private Teacher teacher;
 
 	@Before
 	public void init() {
 		mailService = mock(MailService.class);
 		universityDB = mock(UniversityDB.class);
 		student = createNewTestStudent("Name", "Surname", "ID");
+		teacher = createTestTeacher("Id0");
 
 		when(mailService.getMail(student)).thenReturn("Mail");
 	}
@@ -103,20 +105,29 @@ public class StudentTest {
 
 	@Test
 	public void testSendTutorRequestToDB() {
-		String idTeacher = "Id0";
-		Teacher tutor = createTestTeacher(idTeacher);
-		
 		doAnswer(new Answer<Void>() {
-			public Void answer (InvocationOnMock invocation) {
+			public Void answer(InvocationOnMock invocation) {
 				Object[] args = invocation.getArguments();
 				((Student) args[0]).setIdTutor((String) args[1]);
 				return null;
 			}
-		}).when(universityDB).studentAskTutor(student, idTeacher);
+		}).when(universityDB).studentAskTutor(student, teacher.getId());
+
+		assertTutorRequest(teacher.getId());
+	}
+	
+	@Test (expected = IllegalTutorRequest.class)
+	public void testSendTutorRequestWhenStudentHasAlreadyATutor() {
+		String idTutor = "idTest";
+		student.setIdTutor(idTutor);
 		
-		student.sendTutorRequest(idTeacher);
+		assertTutorRequest(idTutor);
+	}
+	
+	private void assertTutorRequest(String expected) {
+		student.sendTutorRequest(teacher.getId());
 		
-		assertEquals(tutor.getId(), student.getIdTutor());
+		assertEquals(expected, student.getIdTutor());
 	}
 
 	private Course createTestCourse(String id) {

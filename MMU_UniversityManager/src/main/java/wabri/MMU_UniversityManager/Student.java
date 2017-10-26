@@ -49,7 +49,7 @@ public class Student {
 
 	public void askMail() {
 		if (mail == null) {
-			setMail(mailService.getMail(this));			
+			setMail(mailService.getMail(this));
 		}
 	}
 
@@ -64,7 +64,7 @@ public class Student {
 	public String getIdTutor() {
 		return idTutor;
 	}
-	
+
 	public void setIdTutor(String idTutor) {
 		this.idTutor = idTutor;
 	}
@@ -77,12 +77,12 @@ public class Student {
 		enrolledCourse.add(course);
 	}
 
-	public void removeEnrolledCourse(String idCourse) throws Error{
+	public void removeEnrolledCourse(String idCourse) throws Error {
 		if (enrolledCourse.isEmpty()) {
 			throw new NoEnrolledCourseError();
 		} else {
 			int index = 0;
-			while(enrolledCourse.get(index) != null) {
+			while (enrolledCourse.get(index) != null) {
 				if (idCourse == enrolledCourse.get(index).getId()) {
 					enrolledCourse.remove(index);
 					return;
@@ -92,8 +92,12 @@ public class Student {
 		}
 	}
 
-	public void sendTutorRequest(String idTeacher) {
-		universityDB.studentAskTutor(this,idTeacher);
+	public void sendTutorRequest(String idTeacher) throws IllegalTutorRequest {
+		if (this.getIdTutor() == null) {
+			universityDB.studentAskTutor(this, idTeacher);			
+		} else {
+			throw new IllegalTutorRequest();
+		}
 	}
 
 }
