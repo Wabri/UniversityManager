@@ -148,12 +148,21 @@ public class StudentTest {
 
 	@Test
 	public void testRequestCourseToDB() {
-		List<CourseRequest> requestedCourses = new ArrayList<CourseRequest>();
-		student.requestCourse("IdCourseTest");
+		Course courseRequested = createTestCourse("idTestCourse");
+		List<CourseRequest> coursesRequested = new ArrayList<CourseRequest>();
 		
-		List<CourseRequest> requestedCoursesOfStudent = universityDB.getRequestedCoursesOfStudent(student.getId());
-		assertEquals(1, requestedCoursesOfStudent.size());
-		assertEquals("idCourseTest", requestedCoursesOfStudent);
+		doAnswer(new Answer<Void>() {
+			public Void answer(InvocationOnMock invocation) {
+				Object[] args = invocation.getArguments();
+				coursesRequested.add(new CourseRequest(((Student)args[0]), courseRequested));
+				return null;
+			}
+		}).when(universityDB).studentRequestCourse(student, courseRequested.getId());
+		
+		student.requestCourse(courseRequested.getId());
+		
+		assertEquals(1, coursesRequested.size());
+		assertEquals(courseRequested.getId(), coursesRequested.get(0).getIdCourse());
 	}
 	
 	private void assertTutorRemoveRequest() {

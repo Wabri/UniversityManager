@@ -107,7 +107,7 @@ public class Student {
 	}
 
 	public void requestCourse(String idCourse) {
-		
+		universityDB.studentRequestCourse(this,idCourse);
 	}
 
 }
