@@ -20,29 +20,17 @@ public class TeacherTest {
 	}
 
 	@Test
-	public void testNewTeacherHaveAName() {
+	public void testNewTeacherHasData() {
 		String name = "Name";
-		teacher = createNewTestTeacher(name, "", "");
+		String surname = "Surname";
+		String id = "ID";
+		teacher = createNewTestTeacher(name, surname, id);
 
 		assertEquals(name, teacher.getName());
-	}
-
-	@Test
-	public void testNewTeacherHaveASurname() {
-		String surname = "Surname";
-		teacher = createNewTestTeacher("", surname, "");
-		
 		assertEquals(surname, teacher.getSurname());
-	}
-
-	@Test
-	public void testNewTeacherHaveAId() {
-		String id = "ID";
-		teacher = createNewTestTeacher("","",id);
-		
 		assertEquals(id, teacher.getId());
 	}
-	
+
 	@Test
 	public void testAskMailWhenMailIsNull() {
 		assertMailTeacher("Mail");
@@ -52,17 +40,17 @@ public class TeacherTest {
 	public void testAskMailWhenMailIsNotNull() {
 		String mail = "MailTest";
 		teacher.setMail(mail);
-		
+
 		assertMailTeacher(mail);
 	}
 
 	private void assertMailTeacher(String expected) {
 		teacher.askMail();
-		
+
 		assertEquals(expected, teacher.getMail());
 	}
-	
+
 	private Teacher createNewTestTeacher(String name, String surname, String id) {
-		return new Teacher(name, surname,id,mailService);
+		return new Teacher(name, surname, id, mailService);
 	}
 }

@@ -40,7 +40,7 @@ public class Teacher {
 	}
 
 	public void askMail() {
-		if (mail==null) {
+		if (mail == null) {
 			setMail(mailService.getMail(this));
 		}
 	}
