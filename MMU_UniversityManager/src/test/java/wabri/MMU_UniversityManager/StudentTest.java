@@ -24,6 +24,20 @@ public class StudentTest {
 		teacher = createTestTeacher("Id0");
 
 		when(mailService.getMail(student)).thenReturn("Mail");
+		doAnswer(new Answer<Void>() {
+			public Void answer(InvocationOnMock invocation) {
+				Object[] args = invocation.getArguments();
+				((Student) args[0]).setIdTutor((String) args[1]);
+				return null;
+			}
+		}).when(universityDB).studentAskTutor(student, teacher.getId());
+		doAnswer(new Answer<Void>() {
+			public Void answer(InvocationOnMock invocation) {
+				Object[] args = invocation.getArguments();
+				((Student) args[0]).setIdTutor(null);
+				return null;
+			}
+		}).when(universityDB).studentRemoveTutor(student);
 	}
 
 	@Test
@@ -105,49 +119,38 @@ public class StudentTest {
 
 	@Test
 	public void testSendTutorRequestToDB() {
-		doAnswer(new Answer<Void>() {
-			public Void answer(InvocationOnMock invocation) {
-				Object[] args = invocation.getArguments();
-				((Student) args[0]).setIdTutor((String) args[1]);
-				return null;
-			}
-		}).when(universityDB).studentAskTutor(student, teacher.getId());
-
 		assertTutorRequest(teacher.getId());
 	}
-	
-	@Test (expected = IllegalTutorRequest.class)
+
+	@Test(expected = IllegalTutorRequest.class)
 	public void testSendTutorRequestWhenStudentHasAlreadyATutor() {
-		String idTutor = "idTest";
+		String idTutor = "idTutorTest";
 		student.setIdTutor(idTutor);
-		
+
 		assertTutorRequest(idTutor);
 	}
-	
+
 	@Test
 	public void testSendTutorRemoveToDB() {
 		student.setIdTutor(teacher.getId());
-		
-		doAnswer(new Answer<Void>() {
-			public Void answer (InvocationOnMock invocation) {
-				Object[] args = invocation.getArguments();
-				((Student)args[0]).setIdTutor(null);
-				return null;
-			}
-		}).when(universityDB).studentRemoveTutor(student);
-		
+
+		assertTutorRemoveRequest();
+	}
+
+	@Test (expected = NoTutorAssignedError.class)
+	public void testSendTutorRemoveToDBWhenNoTutorIsAssigned() {
 		assertTutorRemoveRequest();
 	}
 
 	private void assertTutorRemoveRequest() {
 		student.sendTutorRemoveRequest();
-		
+
 		assertEquals(null, student.getIdTutor());
 	}
-	
+
 	private void assertTutorRequest(String expected) {
 		student.sendTutorRequest(teacher.getId());
-		
+
 		assertEquals(expected, student.getIdTutor());
 	}
 

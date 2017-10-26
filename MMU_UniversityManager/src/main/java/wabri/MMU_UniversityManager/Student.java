@@ -93,14 +93,16 @@ public class Student {
 	}
 
 	public void sendTutorRequest(String idTeacher) throws IllegalTutorRequest {
-		if (this.getIdTutor() == null) {
-			universityDB.studentAskTutor(this, idTeacher);			
-		} else {
+		if (this.getIdTutor() != null) {
 			throw new IllegalTutorRequest();
 		}
+		universityDB.studentAskTutor(this, idTeacher);			
 	}
 
-	public void sendTutorRemoveRequest() {
+	public void sendTutorRemoveRequest() throws NoTutorAssignedError {
+		if (this.getIdTutor() == null) {
+			throw new NoTutorAssignedError();
+		}
 		universityDB.studentRemoveTutor(this);
 	}
 
