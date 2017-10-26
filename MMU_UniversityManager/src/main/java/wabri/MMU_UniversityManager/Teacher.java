@@ -1,5 +1,8 @@
 package wabri.MMU_UniversityManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Teacher {
 
 	private String name;
@@ -7,12 +10,14 @@ public class Teacher {
 	private String id;
 	private String mail;
 	private MailService mailService;
+	private List<Course> coursesTeach;
 
 	public Teacher(String name, String surname, String id, MailService mailService) {
 		this.setName(name);
 		this.setSurname(surname);
 		this.setId(id);
 		this.mailService = mailService;
+		coursesTeach = new ArrayList<Course>();
 	}
 
 	public String getName() {
@@ -39,7 +44,7 @@ public class Teacher {
 		this.id = id;
 	}
 
-	public void askMail() {
+	public void requestMail() {
 		if (mail == null) {
 			setMail(mailService.getMail(this));
 		}
@@ -51,6 +56,10 @@ public class Teacher {
 
 	public void setMail(String mail) {
 		this.mail = mail;
+	}
+
+	public List<Course> getListCoursesTeach() {
+		return coursesTeach;
 	}
 
 }

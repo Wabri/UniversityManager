@@ -43,9 +43,14 @@ public class TeacherTest {
 
 		assertMailTeacher(mail);
 	}
+	
+	@Test
+	public void testNewTeacherHasNoTeachCourse() {
+		assertEquals(0, teacher.getListCoursesTeach().size());
+	}
 
 	private void assertMailTeacher(String expected) {
-		teacher.askMail();
+		teacher.requestMail();
 
 		assertEquals(expected, teacher.getMail());
 	}
