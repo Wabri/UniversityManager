@@ -11,6 +11,7 @@ public class Teacher {
 	private String mail;
 	private MailService mailService;
 	private List<Course> coursesTeach;
+	private List<Student> tutoredStudents;
 
 	public Teacher(String name, String surname, String id, MailService mailService) {
 		this.setName(name);
@@ -18,6 +19,7 @@ public class Teacher {
 		this.setId(id);
 		this.mailService = mailService;
 		coursesTeach = new ArrayList<Course>();
+		tutoredStudents = new ArrayList<Student>(3); 
 	}
 
 	public String getName() {
@@ -79,6 +81,10 @@ public class Teacher {
 				index++;
 			}			
 		}
+	}
+
+	public List<Student> getTutoredStudents() {
+		return tutoredStudents;
 	}
 
 }

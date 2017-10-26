@@ -82,6 +82,11 @@ public class TeacherTest {
 		assertEquals(1, teacher.getListCoursesTeach().size());
 	}
 	
+	@Test
+	public void testNewTeacherHasNoTutoredStudents() {
+		assertEquals(0, teacher.getTutoredStudents().size());
+	}
+	
 	private Course createNewCourse() {
 		return new Course("idCourseTest", "nameCourseTest", teacher);
 	}
