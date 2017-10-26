@@ -26,7 +26,7 @@ public class StudentTest {
 		teacher = createTestTeacher("Id0");
 
 		when(mailService.getMail(student)).thenReturn("Mail");
-		
+
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) {
 				Object[] args = invocation.getArguments();
@@ -34,7 +34,7 @@ public class StudentTest {
 				return null;
 			}
 		}).when(universityDB).studentRequestTutor(student, teacher.getId());
-		
+
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) {
 				Object[] args = invocation.getArguments();
@@ -150,27 +150,37 @@ public class StudentTest {
 	public void testRequestCourseToDB() {
 		Course courseRequested = createTestCourse("idTestCourse");
 		List<CourseRequest> coursesRequested = new ArrayList<CourseRequest>();
-		
+
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) {
 				Object[] args = invocation.getArguments();
-				coursesRequested.add(new CourseRequest(((Student)args[0]), courseRequested));
+				coursesRequested.add(new CourseRequest(((Student) args[0]), courseRequested));
 				return null;
 			}
 		}).when(universityDB).studentRequestCourse(student, courseRequested.getId());
-		
+
 		student.requestCourse(courseRequested.getId());
-		
+
 		assertEquals(1, coursesRequested.size());
 		assertEquals(courseRequested.getId(), coursesRequested.get(0).getIdCourse());
 	}
-	
+
+	@Test(expected = RequestAlreadyActive.class)
+	public void testDoubleRequestCourseToDBThrowError() {
+		String idCourse = "";
+		
+		doThrow(RequestAlreadyActive.class).when(universityDB).studentRequestCourse(student, idCourse);
+		
+		student.requestCourse(idCourse);
+		
+		verify(universityDB, times(1)).studentRequestCourse(student, idCourse);
+	}
+
 	private void assertTutorRemoveRequest() {
 		student.sendTutorRemoveRequest();
 
 		assertEquals(null, student.getIdTutor());
 	}
-	
 
 	private void assertTutorRequest(String expected) {
 		student.sendTutorRequest(teacher.getId());
