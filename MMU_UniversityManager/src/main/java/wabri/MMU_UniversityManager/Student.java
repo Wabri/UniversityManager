@@ -47,7 +47,7 @@ public class Student {
 		this.id = id;
 	}
 
-	public void askMail() {
+	public void requestMail() {
 		if (mail == null) {
 			setMail(mailService.getMail(this));
 		}
@@ -96,7 +96,7 @@ public class Student {
 		if (this.getIdTutor() != null) {
 			throw new IllegalTutorRequest();
 		}
-		universityDB.studentAskTutor(this, idTeacher);			
+		universityDB.studentRequestTutor(this, idTeacher);			
 	}
 
 	public void sendTutorRemoveRequest() throws NoTutorAssignedError {

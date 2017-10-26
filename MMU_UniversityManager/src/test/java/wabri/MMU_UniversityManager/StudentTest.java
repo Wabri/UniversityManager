@@ -29,7 +29,7 @@ public class StudentTest {
 				((Student) args[0]).setIdTutor((String) args[1]);
 				return null;
 			}
-		}).when(universityDB).studentAskTutor(student, teacher.getId());
+		}).when(universityDB).studentRequestTutor(student, teacher.getId());
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) {
 				Object[] args = invocation.getArguments();
@@ -52,12 +52,12 @@ public class StudentTest {
 	}
 
 	@Test
-	public void testAskMailWhenMailIsNull() {
+	public void testRequestMailWhenMailIsNull() {
 		assertMailStudent("Mail");
 	}
 
 	@Test
-	public void testAskMailWhenMailIsNotNull() {
+	public void testRequestMailWhenMailIsNotNull() {
 		String mail = "Test Mail";
 		student.setMail(mail);
 
@@ -141,11 +141,17 @@ public class StudentTest {
 		assertTutorRemoveRequest();
 	}
 
+	@Test
+	public void testRequestCourseToDB() {
+		
+	}
+	
 	private void assertTutorRemoveRequest() {
 		student.sendTutorRemoveRequest();
 
 		assertEquals(null, student.getIdTutor());
 	}
+	
 
 	private void assertTutorRequest(String expected) {
 		student.sendTutorRequest(teacher.getId());
@@ -162,7 +168,7 @@ public class StudentTest {
 	}
 
 	private void assertMailStudent(String expected) {
-		student.askMail();
+		student.requestMail();
 		assertEquals(expected, student.getMail());
 	}
 
