@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -47,14 +48,7 @@ public class StudentTest {
 			}
 		}).when(universityDB).studentRemoveTutor(student);
 
-		doAnswer(new Answer<Void>() {
-			public Void answer(InvocationOnMock invocation) {
-				Object[] args = invocation.getArguments();
-				coursesRequested.add(new CourseRequest(((Student) args[0]), courseRequested));
-				return null;
-			}
-		}).doThrow(RequestAlreadyActive.class).when(universityDB).studentRequestCourse(student,
-				courseRequested.getId());
+		universityDBDoAnswerWithCourseRequest(courseRequested);
 	}
 
 	@Test
@@ -177,6 +171,32 @@ public class StudentTest {
 
 		verify(universityDB, times(2)).studentRequestCourse(student, idCourse);
 		assertEquals(1, coursesRequested.size());
+	}
+
+	@Test
+	public void testStudentCanRequestMoreThanOneCourse() {
+		Course[] courseRequested0 = { createTestCourse("id0"), createTestCourse("id1") };
+
+		universityDBDoAnswerWithCourseRequest(courseRequested0[0]);
+
+		universityDBDoAnswerWithCourseRequest(courseRequested0[1]);
+
+		student.requestCourse(courseRequested0[0].getId());
+		student.requestCourse(courseRequested0[1].getId());
+
+		assertEquals(2, coursesRequested.size());
+		assertEquals(courseRequested0[0].getId(), coursesRequested.get(0).getIdCourse());
+		assertEquals(courseRequested0[1].getId(), coursesRequested.get(1).getIdCourse());
+	}
+
+	private void universityDBDoAnswerWithCourseRequest(Course withCourseRequested) {
+		doAnswer(new Answer<Void>() {
+			public Void answer(InvocationOnMock invocation) {
+				Object[] args = invocation.getArguments();
+				coursesRequested.add(new CourseRequest(((Student) args[0]), withCourseRequested));
+				return null;
+			}
+		}).doThrow(RequestAlreadyActive.class).when(universityDB).studentRequestCourse(student, withCourseRequested.getId());
 	}
 
 	private void assertTutorRemoveRequest() {
