@@ -10,9 +10,11 @@ public class TeacherTest {
 
 	Teacher teacher;
 	private MailService mailService;
+	private Course course;
 
 	@Before
 	public void init() {
+		course = createNewCourse();
 		mailService = mock(MailService.class);
 		teacher = createNewTestTeacher("NameTest", "SurnameTest", "ID0");
 
@@ -43,19 +45,26 @@ public class TeacherTest {
 
 		assertMailTeacher(mail);
 	}
-	
+
 	@Test
 	public void testNewTeacherHasNoTeachCourse() {
 		assertEquals(0, teacher.getListCoursesTeach().size());
 	}
-	
+
 	@Test
 	public void testAddTeachCourse() {
-		Course course = createNewCourse();
 		teacher.addCourseTeach(course);
-		
+
 		assertEquals(1, teacher.getListCoursesTeach().size());
 		assertEquals(course.getId(), teacher.getListCoursesTeach().get(0).getId());
+	}
+
+	@Test
+	public void testRemoveTeachCourse() {
+		teacher.addCourseTeach(course);
+		teacher.removeCourseTeach(course.getId());
+		
+		assertEquals(0, teacher.getListCoursesTeach().size());
 	}
 
 	private Course createNewCourse() {

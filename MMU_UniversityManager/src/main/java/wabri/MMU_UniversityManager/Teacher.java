@@ -66,4 +66,15 @@ public class Teacher {
 		coursesTeach.add(course);
 	}
 
+	public void removeCourseTeach(String idCourse) {
+		int index = 0;
+		while (coursesTeach.get(index) != null) {
+			if (coursesTeach.get(index).getId() == idCourse) {
+				coursesTeach.remove(index);
+				return;
+			}
+			index++;
+		}
+	}
+
 }
