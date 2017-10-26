@@ -48,6 +48,19 @@ public class TeacherTest {
 	public void testNewTeacherHasNoTeachCourse() {
 		assertEquals(0, teacher.getListCoursesTeach().size());
 	}
+	
+	@Test
+	public void testAddTeachCourse() {
+		Course course = createNewCourse();
+		teacher.addCourseTeach(course);
+		
+		assertEquals(1, teacher.getListCoursesTeach().size());
+		assertEquals(course.getId(), teacher.getListCoursesTeach().get(0).getId());
+	}
+
+	private Course createNewCourse() {
+		return new Course("idCourseTest", "nameCourseTest", teacher);
+	}
 
 	private void assertMailTeacher(String expected) {
 		teacher.requestMail();

@@ -62,4 +62,8 @@ public class Teacher {
 		return coursesTeach;
 	}
 
+	public void addCourseTeach(Course course) {
+		coursesTeach.add(course);
+	}
+
 }
