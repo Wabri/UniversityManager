@@ -3,6 +3,9 @@ package wabri.MMU_UniversityManager;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -23,6 +26,7 @@ public class StudentTest {
 		teacher = createTestTeacher("Id0");
 
 		when(mailService.getMail(student)).thenReturn("Mail");
+		
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) {
 				Object[] args = invocation.getArguments();
@@ -30,6 +34,7 @@ public class StudentTest {
 				return null;
 			}
 		}).when(universityDB).studentRequestTutor(student, teacher.getId());
+		
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) {
 				Object[] args = invocation.getArguments();
@@ -143,7 +148,12 @@ public class StudentTest {
 
 	@Test
 	public void testRequestCourseToDB() {
+		List<CourseRequest> requestedCourses = new ArrayList<CourseRequest>();
+		student.requestCourse("IdCourseTest");
 		
+		List<CourseRequest> requestedCoursesOfStudent = universityDB.getRequestedCoursesOfStudent(student.getId());
+		assertEquals(1, requestedCoursesOfStudent.size());
+		assertEquals("idCourseTest", requestedCoursesOfStudent);
 	}
 	
 	private void assertTutorRemoveRequest() {

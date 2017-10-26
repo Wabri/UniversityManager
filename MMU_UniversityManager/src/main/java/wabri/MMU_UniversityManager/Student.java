@@ -106,4 +106,8 @@ public class Student {
 		universityDB.studentRemoveTutor(this);
 	}
 
+	public void requestCourse(String idCourse) {
+		
+	}
+
 }
