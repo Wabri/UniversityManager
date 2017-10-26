@@ -19,6 +19,7 @@ public class StudentTest {
 	private Teacher teacher;
 	private Course course;
 	private List<CourseRequest> coursesRequested;
+	private List<TutorRequest> tutorsRequested;
 
 	@Before
 	public void init() {
@@ -28,16 +29,19 @@ public class StudentTest {
 		teacher = createTestTeacher("Id0");
 		course = createTestCourse("idTestCourse");
 		coursesRequested = new ArrayList<CourseRequest>();
+		tutorsRequested = new ArrayList<TutorRequest>();
 
 		when(mailService.getMail(student)).thenReturn("Mail");
+
+		when(universityDB.findTeacherWithId(teacher.getId())).thenReturn(teacher);
 
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) {
 				Object[] args = invocation.getArguments();
-				((Student) args[0]).setIdTutor((String) args[1]);
+				tutorsRequested.add(new TutorRequest(universityDB.findTeacherWithId((String)args[1]), ((Student)args[0])));
 				return null;
 			}
-		}).when(universityDB).studentRequestTutor(student, teacher.getId());
+		}).doThrow(RequestAlreadyActive.class).when(universityDB).studentRequestTutor(student, teacher.getId());
 
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) {
@@ -48,7 +52,7 @@ public class StudentTest {
 		}).when(universityDB).studentRemoveTutor(student);
 
 		universityDBDoAnswerWithCourseRequest(course);
-		
+
 		universityDBDoAnswerWithCourseRemoveRequest(course.getId());
 	}
 
@@ -202,6 +206,12 @@ public class StudentTest {
 		assertEquals(0, student.getEnrolledCourse().size());
 	}
 
+	@Test (expected = RequestAlreadyActive.class)
+	public void testSendTutorRequestWhenAlreadyStudentRequestOne() {
+		student.sendTutorRequest(teacher.getId());
+		student.sendTutorRequest(teacher.getId());
+	}
+
 	private void universityDBDoAnswerWithCourseRemoveRequest(String idCourseToRemove) {
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) {
@@ -231,6 +241,18 @@ public class StudentTest {
 
 	private void assertTutorRequest(String expected) {
 		student.sendTutorRequest(teacher.getId());
+		
+		doAnswer(new Answer<Void>() {
+			public Void answer(InvocationOnMock invocation) {
+				Object[] args = invocation.getArguments();
+				TutorRequest tutorRequest = (TutorRequest) args[0];
+				Student tempStud = tutorRequest.getStudent();
+				tempStud.setIdTutor(tutorRequest.getIdTeacher());
+				return null;
+			}
+		}).when(universityDB).createTutoring(tutorsRequested.get(0));
+		
+		universityDB.createTutoring(tutorsRequested.get(0));
 
 		assertEquals(expected, student.getIdTutor());
 	}

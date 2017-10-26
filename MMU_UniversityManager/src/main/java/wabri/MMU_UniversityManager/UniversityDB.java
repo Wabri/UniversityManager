@@ -10,4 +10,8 @@ public interface UniversityDB {
 
 	void studentRemoveCourse(Student student, String id);
 
+	Teacher findTeacherWithId(String string);
+
+	void createTutoring(TutorRequest tutorRequest);
+
 }
