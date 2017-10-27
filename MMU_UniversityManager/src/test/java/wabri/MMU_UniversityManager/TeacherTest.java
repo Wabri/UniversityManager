@@ -156,7 +156,7 @@ public class TeacherTest {
 	}
 
 	private Student creteNewStudent(String idStudent) {
-		return new Student("nameStudentTest", "surnameStudentTest", idStudent, mailService);
+		return new Student("nameStudentTest", "surnameStudentTest", idStudent, mailService, null);
 	}
 
 	private Course createNewCourse() {
