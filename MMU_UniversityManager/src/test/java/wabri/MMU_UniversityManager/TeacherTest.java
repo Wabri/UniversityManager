@@ -122,6 +122,15 @@ public class TeacherTest {
 		
 		assertEquals(false, teacher.getRequestedTutor().contains(tutorRequest));
 	}
+	
+	@Test
+	public void testAcceptTutorRequest() {
+		String idStudent = "idStudent";
+		teacher.addRequestedTutoring(createNewTutorRequest(idStudent));
+		teacher.acceptTutorRequest(idStudent);
+		
+		assertEquals(idStudent, teacher.getTutoredStudents().get(0).getId());
+	}
 
 	private TutorRequest createNewTutorRequest(String idStudent) {
 		return new TutorRequest(teacher, creteNewStudent(idStudent));

@@ -85,7 +85,7 @@ public class Teacher {
 					return;
 				}
 				index++;
-			}			
+			}
 		}
 	}
 
@@ -93,17 +93,17 @@ public class Teacher {
 		return tutoredStudents;
 	}
 
-	public void addTutoredStudent(Student student) throws OutOfLimitTutoredStudents{
-		if (tutoredStudents.size()<3) {
+	public void addTutoredStudent(Student student) throws OutOfLimitTutoredStudents {
+		if (tutoredStudents.size() < 3) {
 			tutoredStudents.add(student);
 		} else {
 			throw new OutOfLimitTutoredStudents();
 		}
 	}
 
-	public void addRequestedTutoring(TutorRequest tutorRequest) throws OutOfLimitTutoredStudents{
-		if (tutoredStudents.size()<3) {
-			requestedTutor.add(tutorRequest);			
+	public void addRequestedTutoring(TutorRequest tutorRequest) throws OutOfLimitTutoredStudents {
+		if (tutoredStudents.size() < 3) {
+			requestedTutor.add(tutorRequest);
 		} else {
 			throw new OutOfLimitTutoredStudents();
 		}
@@ -111,6 +111,14 @@ public class Teacher {
 
 	public List<TutorRequest> getTutorRequest() {
 		return null;
+	}
+
+	public void acceptTutorRequest(String idStudent) {
+		for (TutorRequest tutorRequest : requestedTutor) {
+			if (tutorRequest.getIdStudent() == idStudent) {
+				addTutoredStudent(tutorRequest.getStudent());
+			}
+		}
 	}
 
 }
