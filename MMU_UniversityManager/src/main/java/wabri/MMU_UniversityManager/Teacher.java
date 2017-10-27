@@ -12,6 +12,11 @@ public class Teacher {
 	private MailService mailService;
 	private List<Course> coursesTeach;
 	private List<Student> tutoredStudents;
+	private List<TutorRequest> requestedTutor;
+
+	public List<TutorRequest> getRequestedTutor() {
+		return requestedTutor;
+	}
 
 	public Teacher(String name, String surname, String id, MailService mailService) {
 		this.setName(name);
@@ -19,7 +24,8 @@ public class Teacher {
 		this.setId(id);
 		this.mailService = mailService;
 		coursesTeach = new ArrayList<Course>();
-		tutoredStudents = new ArrayList<Student>(3); 
+		tutoredStudents = new ArrayList<Student>(3);
+		requestedTutor = new ArrayList<TutorRequest>();
 	}
 
 	public String getName() {
@@ -93,6 +99,14 @@ public class Teacher {
 		} else {
 			throw new OutOfLimitTutoredStudents();
 		}
+	}
+
+	public void addRequestedTutoring(TutorRequest tutorRequest) {
+		requestedTutor.add(tutorRequest);
+	}
+
+	public List<TutorRequest> getTutorRequest() {
+		return null;
 	}
 
 }

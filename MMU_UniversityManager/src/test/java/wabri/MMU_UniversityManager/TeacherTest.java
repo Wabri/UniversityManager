@@ -103,6 +103,18 @@ public class TeacherTest {
 		assertEquals(idStudent1, teacher.getTutoredStudents().get(1));
 		assertEquals(idStudent2, teacher.getTutoredStudents().get(2));
 	}
+	
+	@Test
+	public void testAddNewTutorRequestUpdateListOfRequest() {
+		TutorRequest tutorRequest = createNewTutorRequest("id0");
+		teacher.addRequestedTutoring(tutorRequest);
+		
+		assertEquals(1, teacher.getRequestedTutor().size());
+	}
+
+	private TutorRequest createNewTutorRequest(String idStudent) {
+		return new TutorRequest(teacher, creteNewStudent(idStudent));
+	}
 
 	private Student creteNewStudent(String idStudent) {
 		return new Student("nameStudentTest", "surnameStudentTest", idStudent, mailService);
