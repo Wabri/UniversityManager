@@ -8,13 +8,13 @@ public class Course {
 	private String id;
 	private String name;
 	private Teacher teacher;
-	private List<Student> enrolledStudent;
+	private List<Student> enrolledStudents;
 
 	public Course(String id, String name, Teacher teacher) {
 		this.setId(id);
 		this.setName(name);
 		this.setTeacher(teacher);
-		enrolledStudent = new ArrayList<Student>();
+		enrolledStudents = new ArrayList<Student>();
 	}
 
 	public String getId() {
@@ -50,7 +50,11 @@ public class Course {
 	}
 
 	public List<Student> getEnrolledStudent() {
-		return enrolledStudent;
+		return enrolledStudents;
+	}
+
+	public void addEnrolledStudent(Student studentEnrolled) {
+		enrolledStudents.add(studentEnrolled);
 	}
 
 }

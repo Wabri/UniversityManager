@@ -10,10 +10,12 @@ public class CourseTest {
 
 	private Course course;
 	private Teacher teacher;
+	private MailService mailService;
 
 	@Before
 	public void init() {
 		teacher = mock(Teacher.class);
+		mailService = mock(MailService.class);
 		course = createNewTestCourse("ID", "name", teacher);
 	}
 
@@ -46,7 +48,22 @@ public class CourseTest {
 	
 	@Test
 	public void testListOfStudentsEnrollHasNoEnrolledStudents() {
-		assertEquals(0, course.getEnrolledStudent().size());
+		assertEnrolledStudents(0);
+	}
+
+	@Test
+	public void testAddEnrolledStudents() {
+		course.addEnrolledStudent(createNewTestStudent());
+		
+		assertEnrolledStudents(1);
+	}
+
+	private void assertEnrolledStudents(int expected) {
+		assertEquals(expected, course.getEnrolledStudent().size());
+	}
+	
+	private Student createNewTestStudent() {
+		return new Student("nameTestStudent", "surnameTestStudent", "idTestStudent", mailService);
 	}
 
 	private Course createNewTestCourse(String id, String name, Teacher teacher) {
