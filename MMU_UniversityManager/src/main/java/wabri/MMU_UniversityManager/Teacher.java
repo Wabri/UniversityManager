@@ -113,12 +113,14 @@ public class Teacher {
 		return null;
 	}
 
-	public void acceptTutorRequest(String idStudent) {
+	public void acceptTutorRequest(String idStudent) throws NoTutorRequestError{
 		for (TutorRequest tutorRequest : requestedTutor) {
 			if (tutorRequest.getIdStudent() == idStudent) {
-				addTutoredStudent(tutorRequest.getStudent());
+				this.addTutoredStudent(tutorRequest.getStudent());
+				return;
 			}
 		}
+		throw new NoTutorRequestError();
 	}
 
 }
