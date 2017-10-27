@@ -103,13 +103,24 @@ public class TeacherTest {
 		assertEquals(idStudent1, teacher.getTutoredStudents().get(1));
 		assertEquals(idStudent2, teacher.getTutoredStudents().get(2));
 	}
-	
+
 	@Test
 	public void testAddNewTutorRequestUpdateListOfRequest() {
 		TutorRequest tutorRequest = createNewTutorRequest("id0");
 		teacher.addRequestedTutoring(tutorRequest);
-		
+
 		assertEquals(1, teacher.getRequestedTutor().size());
+	}
+	
+	@Test (expected = OutOfLimitTutoredStudents.class)
+	public void testAddNewTutorRequestIsNotAllowedWhenTutoredStudentAreAlreadyThree() {
+		TutorRequest tutorRequest = createNewTutorRequest("idTutorRequestTest");
+		teacher.addTutoredStudent(creteNewStudent("id0"));
+		teacher.addTutoredStudent(creteNewStudent("id1"));
+		teacher.addTutoredStudent(creteNewStudent("id2"));
+		teacher.addRequestedTutoring(tutorRequest);
+		
+		assertEquals(false, teacher.getRequestedTutor().contains(tutorRequest));
 	}
 
 	private TutorRequest createNewTutorRequest(String idStudent) {

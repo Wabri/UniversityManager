@@ -101,8 +101,12 @@ public class Teacher {
 		}
 	}
 
-	public void addRequestedTutoring(TutorRequest tutorRequest) {
-		requestedTutor.add(tutorRequest);
+	public void addRequestedTutoring(TutorRequest tutorRequest) throws OutOfLimitTutoredStudents{
+		if (tutoredStudents.size()<3) {
+			requestedTutor.add(tutorRequest);			
+		} else {
+			throw new OutOfLimitTutoredStudents();
+		}
 	}
 
 	public List<TutorRequest> getTutorRequest() {
