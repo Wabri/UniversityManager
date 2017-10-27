@@ -18,7 +18,7 @@ public class CourseTest {
 	}
 
 	@Test
-	public void testNewCourseHaveAId() {
+	public void testNewCourseHasInformation() {
 		String id = "IDTest";
 		String name = "nameTest";
 		course = createNewTestCourse(id, name,teacher);
@@ -42,6 +42,11 @@ public class CourseTest {
 		when(teacher.getId()).thenReturn(id);
 
 		assertEquals(id, course.getIdTeacher());
+	}
+	
+	@Test
+	public void testListOfStudentsEnrollHasNoEnrolledStudents() {
+		assertEquals(0, course.getEnrolledStudent().size());
 	}
 
 	private Course createNewTestCourse(String id, String name, Teacher teacher) {
