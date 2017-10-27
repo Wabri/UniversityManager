@@ -52,8 +52,17 @@ public class CourseTest {
 	}
 
 	@Test
-	public void testAddEnrolledStudents() {
+	public void testAddEnrolledStudent() {
 		course.addEnrolledStudent(createNewTestStudent());
+		
+		assertEnrolledStudents(1);
+	}
+	
+	@Test (expected = CourseAttendenceAlreadyActive.class)
+	public void testAddEnrolledStudentWhenAlreadyStudentIsInTheListThrowError() {
+		Student student = createNewTestStudent();
+		course.addEnrolledStudent(student);
+		course.addEnrolledStudent(student);
 		
 		assertEnrolledStudents(1);
 	}

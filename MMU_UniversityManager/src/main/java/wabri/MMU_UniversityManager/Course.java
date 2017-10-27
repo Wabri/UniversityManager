@@ -53,7 +53,10 @@ public class Course {
 		return enrolledStudents;
 	}
 
-	public void addEnrolledStudent(Student studentEnrolled) {
+	public void addEnrolledStudent(Student studentEnrolled) throws CourseAttendenceAlreadyActive{
+		if (enrolledStudents.contains(studentEnrolled)) {
+			throw new CourseAttendenceAlreadyActive();
+		}
 		enrolledStudents.add(studentEnrolled);
 	}
 
