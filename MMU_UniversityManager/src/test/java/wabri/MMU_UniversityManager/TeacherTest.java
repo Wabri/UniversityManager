@@ -111,18 +111,18 @@ public class TeacherTest {
 
 		assertEquals(1, teacher.getRequestedTutor().size());
 	}
-	
-	@Test (expected = OutOfLimitTutoredStudents.class)
+
+	@Test(expected = OutOfLimitTutoredStudents.class)
 	public void testAddNewTutorRequestIsNotAllowedWhenTutoredStudentAreAlreadyThree() {
 		TutorRequest tutorRequest = createNewTutorRequest("idTutorRequestTest");
 		teacher.addTutoredStudent(creteNewStudent("id0"));
 		teacher.addTutoredStudent(creteNewStudent("id1"));
 		teacher.addTutoredStudent(creteNewStudent("id2"));
 		teacher.addRequestedTutoring(tutorRequest);
-		
+
 		assertEquals(false, teacher.getRequestedTutor().contains(tutorRequest));
 	}
-	
+
 	@Test
 	public void testAcceptTutorRequest() {
 		String idStudent = "idStudent";
@@ -130,18 +130,27 @@ public class TeacherTest {
 		assertAcceptTutorRequest(idStudent, idStudent);
 	}
 
-	@Test (expected = NoTutorRequestError.class)
+	@Test(expected = NoTutorRequestError.class)
 	public void testAcceptInexistentTutorRequest() {
 		String idStudent = "idStudent";
 		assertAcceptTutorRequest(null, idStudent);
 	}
 
+	@Test(expected = OutOfLimitTutoredStudents.class)
+	public void testCantAcceptTutorRequestIfTutoredStudentAreAlreadyThree() {
+		teacher.addTutoredStudent(creteNewStudent("id0"));
+		teacher.addTutoredStudent(creteNewStudent("id1"));
+		teacher.addTutoredStudent(creteNewStudent("id2"));
+
+		assertAcceptTutorRequest("id0", "id3");
+	}
+
 	private void assertAcceptTutorRequest(String expected, String accept) {
 		teacher.acceptTutorRequest(accept);
-		
+
 		assertEquals(expected, teacher.getTutoredStudents().get(0).getId());
 	}
-	
+
 	private TutorRequest createNewTutorRequest(String idStudent) {
 		return new TutorRequest(teacher, creteNewStudent(idStudent));
 	}

@@ -113,11 +113,15 @@ public class Teacher {
 		return null;
 	}
 
-	public void acceptTutorRequest(String idStudent) throws NoTutorRequestError{
-		for (TutorRequest tutorRequest : requestedTutor) {
-			if (tutorRequest.getIdStudent() == idStudent) {
-				this.addTutoredStudent(tutorRequest.getStudent());
-				return;
+	public void acceptTutorRequest(String idStudent) throws NoTutorRequestError, OutOfLimitTutoredStudents {
+		if (tutoredStudents.size() >= 3) {
+			throw new OutOfLimitTutoredStudents();
+		} else {
+			for (TutorRequest tutorRequest : requestedTutor) {
+				if (tutorRequest.getIdStudent() == idStudent) {
+					this.addTutoredStudent(tutorRequest.getStudent());
+					return;
+				}
 			}
 		}
 		throw new NoTutorRequestError();
