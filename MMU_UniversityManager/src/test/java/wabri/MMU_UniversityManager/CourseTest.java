@@ -53,26 +53,43 @@ public class CourseTest {
 
 	@Test
 	public void testAddEnrolledStudent() {
-		course.addEnrolledStudent(createNewTestStudent());
+		course.addEnrolledStudent(createNewTestStudent("idTestStudent"));
 		
 		assertEnrolledStudents(1);
 	}
 	
 	@Test (expected = CourseAttendenceAlreadyActive.class)
 	public void testAddEnrolledStudentWhenAlreadyStudentIsInTheListThrowError() {
-		Student student = createNewTestStudent();
+		Student student = createNewTestStudent("idTestStudent");
 		course.addEnrolledStudent(student);
 		course.addEnrolledStudent(student);
 		
 		assertEnrolledStudents(1);
+	}
+	
+	@Test
+	public void testMoreThanOneStudentsCanAddedToEnrollStudents() {
+		course.addEnrolledStudent(createNewTestStudent("idTestStudent0"));
+		course.addEnrolledStudent(createNewTestStudent("idTestStudent1"));
+		
+		assertEnrolledStudents(2);
+	}
+	
+	@Test
+	public void testRemoveEnrollStudent() {
+		String idStudentToRemove = "idTestStudent";
+		course.addEnrolledStudent(createNewTestStudent(idStudentToRemove));
+		course.removeEnrolledStudent(idStudentToRemove);
+		
+		assertEnrolledStudents(0);
 	}
 
 	private void assertEnrolledStudents(int expected) {
 		assertEquals(expected, course.getEnrolledStudent().size());
 	}
 	
-	private Student createNewTestStudent() {
-		return new Student("nameTestStudent", "surnameTestStudent", "idTestStudent", mailService);
+	private Student createNewTestStudent(String idStudent) {
+		return new Student("nameTestStudent", "surnameTestStudent", idStudent, mailService);
 	}
 
 	private Course createNewTestCourse(String id, String name, Teacher teacher) {

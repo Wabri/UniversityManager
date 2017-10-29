@@ -60,4 +60,8 @@ public class Course {
 		enrolledStudents.add(studentEnrolled);
 	}
 
+	public void removeEnrolledStudent(String idStudentToRemove) {
+		enrolledStudents.remove(0);		
+	}
+
 }
