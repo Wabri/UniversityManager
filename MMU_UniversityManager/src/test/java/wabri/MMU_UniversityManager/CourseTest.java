@@ -116,11 +116,16 @@ public class CourseTest {
 	}
 
 	@Test
-	public void testAddNewCourseRequest() {
+	public void testAddNewStudentsCourseRequest() {
 		CourseRequest courseRequest = new CourseRequest(createNewTestStudent("idTestStudent"), course);
 		course.addCourseRequest(courseRequest);
-		
+
 		assertEquals(1, course.getStudentsCourseRequest().size());
+	}
+	
+	@Test
+	public void testNewCourseHasStudentsCourseRequestAreEmpty () {
+		assertEquals(0, course.getStudentsCourseRequest().size());
 	}
 
 	private void assertEnrolledStudents(int expected) {
