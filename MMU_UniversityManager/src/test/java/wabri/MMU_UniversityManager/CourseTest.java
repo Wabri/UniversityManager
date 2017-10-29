@@ -88,7 +88,7 @@ public class CourseTest {
 	public void testRemoveEnrollStudentWhenListHasMoreThanOneElement() {
 		String idStudentToRemove = "idStudentToRemove";
 		Student studentToRemove = createNewTestStudent(idStudentToRemove);
-		
+
 		course.addEnrolledStudent(createNewTestStudent("idStudentTest"));
 		course.addEnrolledStudent(studentToRemove);
 		course.removeEnrolledStudent(idStudentToRemove);
@@ -96,14 +96,20 @@ public class CourseTest {
 		assertFalse(course.getEnrolledStudent().contains(studentToRemove));
 		assertEnrolledStudents(1);
 	}
-	
-	@Test (expected = NoEnrollStudentWithThisId.class)
+
+	@Test(expected = NoEnrolledStudentWithThisId.class)
 	public void testRemoveEnrollStudentWhenIdStudentIsWrong() {
 		String wrongIdStudentToRemove = "idStudentWrong";
 		course.addEnrolledStudent(createNewTestStudent("idTestStudent"));
 		course.removeEnrolledStudent(wrongIdStudentToRemove);
-		
+
 		assertEnrolledStudents(1);
+	}
+
+	@Test(expected = NoEnrolledStudentError.class)
+	public void testRemoveEnrollStudentThrowErrorIfListIsEmpty() {
+		course.removeEnrolledStudent("idTestStudent");
+		assertEnrolledStudents(0);
 	}
 
 	private void assertEnrolledStudents(int expected) {
