@@ -78,8 +78,8 @@ public class Course {
 				}
 			} catch (IndexOutOfBoundsException e) {
 				throw new NoEnrolledStudentWithThisId();
-			} 
-			
+			}
+
 		}
 	}
 
@@ -91,8 +91,19 @@ public class Course {
 		return studentsCourseRequest;
 	}
 
-	public void removeCourseRequestFromStudent(String idStudentCourseToRemove) {
-		studentsCourseRequest.remove(0);
+	public void removeCourseRequestFromStudent(String idStudentCourseToRemove) throws NoCourseRequestActiveForThisStudent{
+		try {
+			int index = 0;
+			while (studentsCourseRequest.get(index) != null) {
+				if (studentsCourseRequest.get(index).getIdStudent() == idStudentCourseToRemove) {
+					studentsCourseRequest.remove(index);
+					return;
+				}
+				index++;
+			}
+		} catch (IndexOutOfBoundsException e) {
+			throw new NoCourseRequestActiveForThisStudent();
+		}
 	}
 
 }

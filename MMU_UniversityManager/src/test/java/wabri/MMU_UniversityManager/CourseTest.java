@@ -122,26 +122,33 @@ public class CourseTest {
 		assertStudentCourseRequest(1);
 	}
 
-
 	@Test
-	public void testNewCourseHasStudentsCourseRequestAreEmpty () {
+	public void testNewCourseHasStudentsCourseRequestAreEmpty() {
 		assertStudentCourseRequest(0);
 	}
-	
+
 	@Test
-	public void testRemoveCourseRequest () {
+	public void testRemoveCourseRequest() {
 		String idStudent = "idTestStudent";
-		
-		course.addCourseRequest(createNewTestCourseRequest(createNewTestStudent(idStudent )));
+
+		course.addCourseRequest(createNewTestCourseRequest(createNewTestStudent(idStudent)));
 		course.removeCourseRequestFromStudent("idTestStudent");
-		
+
 		assertStudentCourseRequest(0);
+	}
+
+	@Test(expected = NoCourseRequestActiveForThisStudent.class)
+	public void testRemoveCourseRequestWhenIdOfStudentIsWrongThrowError() {
+		course.addCourseRequest(createNewTestCourseRequest(createNewTestStudent("idTestStudent")));
+		course.removeCourseRequestFromStudent("wrongIdOfStudent");
+
+		assertStudentCourseRequest(1);
 	}
 
 	private CourseRequest createNewTestCourseRequest(Student student) {
 		return new CourseRequest(student, course);
 	}
-	
+
 	private void assertStudentCourseRequest(int expected) {
 		assertEquals(expected, course.getStudentsCourseRequest().size());
 	}
