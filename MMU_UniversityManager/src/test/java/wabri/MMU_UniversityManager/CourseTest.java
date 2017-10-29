@@ -96,6 +96,15 @@ public class CourseTest {
 		assertFalse(course.getEnrolledStudent().contains(studentToRemove));
 		assertEnrolledStudents(1);
 	}
+	
+	@Test (expected = NoEnrollStudentWithThisId.class)
+	public void testRemoveEnrollStudentWhenIdStudentIsWrong() {
+		String wrongIdStudentToRemove = "idStudentWrong";
+		course.addEnrolledStudent(createNewTestStudent("idTestStudent"));
+		course.removeEnrolledStudent(wrongIdStudentToRemove);
+		
+		assertEnrolledStudents(1);
+	}
 
 	private void assertEnrolledStudents(int expected) {
 		assertEquals(expected, course.getEnrolledStudent().size());

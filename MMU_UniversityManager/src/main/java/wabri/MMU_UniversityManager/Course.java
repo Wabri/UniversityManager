@@ -62,13 +62,17 @@ public class Course {
 	}
 
 	public void removeEnrolledStudent(String idStudentToRemove) {
-		int index = 0;
-		while (enrolledStudents.get(index) != null) {
-			if (enrolledStudents.get(index).getId() == idStudentToRemove) {
-				enrolledStudents.remove(index);
-				return;
+		try {
+			int index = 0;
+			while (enrolledStudents.get(index) != null) {
+				if (enrolledStudents.get(index).getId() == idStudentToRemove) {
+					enrolledStudents.remove(index);
+					return;
+				}
+				index++;
 			}
-			index++;
+		} catch (IndexOutOfBoundsException e) {
+			throw new NoEnrollStudentWithThisId();
 		}
 	}
 
