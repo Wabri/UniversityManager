@@ -74,17 +74,21 @@ public class Teacher {
 		coursesTeach.add(course);
 	}
 
-	public void removeCourseTeach(String idCourse) {
+	public void removeCourseTeach(String idCourse) throws NoTeachCoursesError, NoTeachCourseWithThisId {
 		if (coursesTeach.isEmpty()) {
 			throw new NoTeachCoursesError();
 		} else {
-			int index = 0;
-			while (coursesTeach.get(index) != null) {
-				if (coursesTeach.get(index).getId() == idCourse) {
-					coursesTeach.remove(index);
-					return;
+			try {
+				int index = 0;
+				while (coursesTeach.get(index) != null) {
+					if (coursesTeach.get(index).getId() == idCourse) {
+						coursesTeach.remove(index);
+						return;
+					}
+					index++;
 				}
-				index++;
+			} catch (IndexOutOfBoundsException e) {
+				throw new NoTeachCourseWithThisId();
 			}
 		}
 	}

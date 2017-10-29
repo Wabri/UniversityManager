@@ -74,7 +74,7 @@ public class TeacherTest {
 		assertEquals(0, teacher.getListCoursesTeach().size());
 	}
 
-	@Test(expected = IndexOutOfBoundsException.class)
+	@Test(expected = NoTeachCourseWithThisId.class)
 	public void testRemoveTeachCourseWhenIdOfCourseIsNotRight() {
 		teacher.addCourseTeach(course);
 		teacher.removeCourseTeach("idError");
