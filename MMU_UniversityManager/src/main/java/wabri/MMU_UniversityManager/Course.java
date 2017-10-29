@@ -1,6 +1,7 @@
 package wabri.MMU_UniversityManager;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Course {
@@ -53,7 +54,7 @@ public class Course {
 		return enrolledStudents;
 	}
 
-	public void addEnrolledStudent(Student studentEnrolled) throws CourseAttendenceAlreadyActive{
+	public void addEnrolledStudent(Student studentEnrolled) throws CourseAttendenceAlreadyActive {
 		if (enrolledStudents.contains(studentEnrolled)) {
 			throw new CourseAttendenceAlreadyActive();
 		}
@@ -61,7 +62,14 @@ public class Course {
 	}
 
 	public void removeEnrolledStudent(String idStudentToRemove) {
-		enrolledStudents.remove(0);		
+		int index = 0;
+		while (enrolledStudents.get(index) != null) {
+			if (enrolledStudents.get(index).getId() == idStudentToRemove) {
+				enrolledStudents.remove(index);
+				return;
+			}
+			index++;
+		}
 	}
 
 }

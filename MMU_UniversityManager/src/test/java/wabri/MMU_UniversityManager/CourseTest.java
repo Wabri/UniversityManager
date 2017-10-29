@@ -23,7 +23,7 @@ public class CourseTest {
 	public void testNewCourseHasInformation() {
 		String id = "IDTest";
 		String name = "nameTest";
-		course = createNewTestCourse(id, name,teacher);
+		course = createNewTestCourse(id, name, teacher);
 
 		assertEquals(id, course.getId());
 		assertEquals(name, course.getName());
@@ -45,7 +45,7 @@ public class CourseTest {
 
 		assertEquals(id, course.getIdTeacher());
 	}
-	
+
 	@Test
 	public void testListOfStudentsEnrollHasNoEnrolledStudents() {
 		assertEnrolledStudents(0);
@@ -54,40 +54,53 @@ public class CourseTest {
 	@Test
 	public void testAddEnrolledStudent() {
 		course.addEnrolledStudent(createNewTestStudent("idTestStudent"));
-		
+
 		assertEnrolledStudents(1);
 	}
-	
-	@Test (expected = CourseAttendenceAlreadyActive.class)
+
+	@Test(expected = CourseAttendenceAlreadyActive.class)
 	public void testAddEnrolledStudentWhenAlreadyStudentIsInTheListThrowError() {
 		Student student = createNewTestStudent("idTestStudent");
 		course.addEnrolledStudent(student);
 		course.addEnrolledStudent(student);
-		
+
 		assertEnrolledStudents(1);
 	}
-	
+
 	@Test
 	public void testMoreThanOneStudentsCanAddedToEnrollStudents() {
 		course.addEnrolledStudent(createNewTestStudent("idTestStudent0"));
 		course.addEnrolledStudent(createNewTestStudent("idTestStudent1"));
-		
+
 		assertEnrolledStudents(2);
 	}
-	
+
 	@Test
 	public void testRemoveEnrollStudent() {
 		String idStudentToRemove = "idTestStudent";
 		course.addEnrolledStudent(createNewTestStudent(idStudentToRemove));
 		course.removeEnrolledStudent(idStudentToRemove);
-		
+
 		assertEnrolledStudents(0);
+	}
+
+	@Test
+	public void testRemoveEnrollStudentWhenListHasMoreThanOneElement() {
+		String idStudentToRemove = "idStudentToRemove";
+		Student studentToRemove = createNewTestStudent(idStudentToRemove);
+		
+		course.addEnrolledStudent(createNewTestStudent("idStudentTest"));
+		course.addEnrolledStudent(studentToRemove);
+		course.removeEnrolledStudent(idStudentToRemove);
+
+		assertFalse(course.getEnrolledStudent().contains(studentToRemove));
+		assertEnrolledStudents(1);
 	}
 
 	private void assertEnrolledStudents(int expected) {
 		assertEquals(expected, course.getEnrolledStudent().size());
 	}
-	
+
 	private Student createNewTestStudent(String idStudent) {
 		return new Student("nameTestStudent", "surnameTestStudent", idStudent, mailService);
 	}
