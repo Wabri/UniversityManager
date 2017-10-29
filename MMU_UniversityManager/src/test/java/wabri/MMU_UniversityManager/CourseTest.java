@@ -117,15 +117,33 @@ public class CourseTest {
 
 	@Test
 	public void testAddNewStudentsCourseRequest() {
-		CourseRequest courseRequest = new CourseRequest(createNewTestStudent("idTestStudent"), course);
-		course.addCourseRequest(courseRequest);
+		course.addCourseRequest(createNewTestCourseRequest(createNewTestStudent("idTestStudent")));
 
-		assertEquals(1, course.getStudentsCourseRequest().size());
+		assertStudentCourseRequest(1);
+	}
+
+
+	@Test
+	public void testNewCourseHasStudentsCourseRequestAreEmpty () {
+		assertStudentCourseRequest(0);
 	}
 	
 	@Test
-	public void testNewCourseHasStudentsCourseRequestAreEmpty () {
-		assertEquals(0, course.getStudentsCourseRequest().size());
+	public void testRemoveCourseRequest () {
+		String idStudent = "idTestStudent";
+		
+		course.addCourseRequest(createNewTestCourseRequest(createNewTestStudent(idStudent )));
+		course.removeCourseRequestFromStudent("idTestStudent");
+		
+		assertStudentCourseRequest(0);
+	}
+
+	private CourseRequest createNewTestCourseRequest(Student student) {
+		return new CourseRequest(student, course);
+	}
+	
+	private void assertStudentCourseRequest(int expected) {
+		assertEquals(expected, course.getStudentsCourseRequest().size());
 	}
 
 	private void assertEnrolledStudents(int expected) {

@@ -91,4 +91,8 @@ public class Course {
 		return studentsCourseRequest;
 	}
 
+	public void removeCourseRequestFromStudent(String idStudentCourseToRemove) {
+		studentsCourseRequest.remove(0);
+	}
+
 }
