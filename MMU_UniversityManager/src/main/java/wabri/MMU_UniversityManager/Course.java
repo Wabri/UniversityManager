@@ -10,12 +10,14 @@ public class Course {
 	private String name;
 	private Teacher teacher;
 	private List<Student> enrolledStudents;
+	private List<CourseRequest> studentsCourseRequest;
 
 	public Course(String id, String name, Teacher teacher) {
 		this.setId(id);
 		this.setName(name);
 		this.setTeacher(teacher);
 		enrolledStudents = new ArrayList<Student>();
+		studentsCourseRequest = new ArrayList<CourseRequest>();
 	}
 
 	public String getId() {
@@ -79,6 +81,14 @@ public class Course {
 			} 
 			
 		}
+	}
+
+	public void addCourseRequest(CourseRequest courseRequest) {
+		studentsCourseRequest.add(courseRequest);
+	}
+
+	public List<CourseRequest> getStudentsCourseRequest() {
+		return studentsCourseRequest;
 	}
 
 }

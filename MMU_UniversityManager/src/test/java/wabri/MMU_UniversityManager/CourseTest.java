@@ -3,6 +3,9 @@ package wabri.MMU_UniversityManager;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -110,6 +113,14 @@ public class CourseTest {
 	public void testRemoveEnrollStudentThrowErrorIfListIsEmpty() {
 		course.removeEnrolledStudent("idTestStudent");
 		assertEnrolledStudents(0);
+	}
+
+	@Test
+	public void testAddNewCourseRequest() {
+		CourseRequest courseRequest = new CourseRequest(createNewTestStudent("idTestStudent"), course);
+		course.addCourseRequest(courseRequest);
+		
+		assertEquals(1, course.getStudentsCourseRequest().size());
 	}
 
 	private void assertEnrolledStudents(int expected) {
