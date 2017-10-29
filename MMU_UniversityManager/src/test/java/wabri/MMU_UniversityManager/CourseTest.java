@@ -154,7 +154,7 @@ public class CourseTest {
 	
 	@Test
 	public void testAddCoursesAttendence() {
-		course.addCourseAttendence(createNewTestCourseAttendence());
+		course.addCourseAttendence(createNewTestCourseAttendence(createNewTestStudent("idStudentTest")));
 		
 		assertCourseAttendence(1);
 	}
@@ -163,13 +163,22 @@ public class CourseTest {
 	public void testNewCourseHasCoursesAttendenceEmpty() {
 		assertCourseAttendence(0);
 	}
+	
+	@Test
+	public void testRemoveCourseAttendence() {
+		String idStudent = "idStudentTest";
+		course.addCourseAttendence(createNewTestCourseAttendence(createNewTestStudent(idStudent)));
+		course.removeCourseAttendence(idStudent);
+		
+		assertCourseAttendence(0);
+	}
 
 	private void assertCourseAttendence(int expected) {
 		assertEquals(expected, course.getCoursesAttendence().size());
 	}
 	
-	private CourseAttendence createNewTestCourseAttendence() {
-		return new CourseAttendence(createNewTestStudent("idStudentTest"), course);
+	private CourseAttendence createNewTestCourseAttendence(Student student) {
+		return new CourseAttendence(student, course);
 	}
 
 	private CourseRequest createNewTestCourseRequest(Student student) {

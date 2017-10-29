@@ -121,4 +121,8 @@ public class Course {
 		return coursesAttendence;
 	}
 
+	public void removeCourseAttendence(String idStudentToRemove) {
+		coursesAttendence.remove(0);
+	}
+
 }
