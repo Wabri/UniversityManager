@@ -11,6 +11,7 @@ public class Course {
 	private Teacher teacher;
 	private List<Student> enrolledStudents;
 	private List<CourseRequest> studentsCourseRequest;
+	private List<CourseAttendence> coursesAttendence;
 
 	public Course(String id, String name, Teacher teacher) {
 		this.setId(id);
@@ -18,6 +19,7 @@ public class Course {
 		this.setTeacher(teacher);
 		enrolledStudents = new ArrayList<Student>();
 		studentsCourseRequest = new ArrayList<CourseRequest>();
+		coursesAttendence = new ArrayList<CourseAttendence>();
 	}
 
 	public String getId() {
@@ -92,7 +94,7 @@ public class Course {
 	}
 
 	public void removeCourseRequestFromStudent(String idStudentCourseToRemove)
-			throws NoCourseRequestActiveForThisStudent {
+			throws NoStudentCourseRequestError, NoCourseRequestActiveForThisStudent {
 		if (studentsCourseRequest.isEmpty()) {
 			throw new NoStudentCourseRequestError();
 		} else {
@@ -109,6 +111,14 @@ public class Course {
 				throw new NoCourseRequestActiveForThisStudent();
 			}
 		}
+	}
+
+	public void addCourseAttendence(CourseAttendence courseAttendence) {
+		coursesAttendence.add(courseAttendence);
+	}
+
+	public List<CourseAttendence> getCoursesAttendence() {
+		return coursesAttendence;
 	}
 
 }

@@ -151,6 +151,26 @@ public class CourseTest {
 		
 		assertStudentCourseRequest(0);
 	}
+	
+	@Test
+	public void testAddCoursesAttendence() {
+		course.addCourseAttendence(createNewTestCourseAttendence());
+		
+		assertCourseAttendence(1);
+	}
+
+	@Test
+	public void testNewCourseHasCoursesAttendenceEmpty() {
+		assertCourseAttendence(0);
+	}
+
+	private void assertCourseAttendence(int expected) {
+		assertEquals(expected, course.getCoursesAttendence().size());
+	}
+	
+	private CourseAttendence createNewTestCourseAttendence() {
+		return new CourseAttendence(createNewTestStudent("idStudentTest"), course);
+	}
 
 	private CourseRequest createNewTestCourseRequest(Student student) {
 		return new CourseRequest(student, course);
