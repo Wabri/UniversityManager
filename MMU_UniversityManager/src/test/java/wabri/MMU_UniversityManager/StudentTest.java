@@ -115,7 +115,7 @@ public class StudentTest {
 		assertEquals(0, student.getEnrolledCourse().size());
 	}
 
-	@Test(expected = IndexOutOfBoundsException.class)
+	@Test(expected = NoEnrolledCourseWithThisId.class)
 	public void testRemoveEnrolledCourseWhenIdIsNotRightThrowException() {
 		student.addEnrolledCourse(createTestCourse("Id0"));
 		student.removeEnrolledCourse("Id1");

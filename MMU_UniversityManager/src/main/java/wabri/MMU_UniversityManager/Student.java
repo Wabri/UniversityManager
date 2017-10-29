@@ -77,17 +77,21 @@ public class Student {
 		enrolledCourse.add(course);
 	}
 
-	public void removeEnrolledCourse(String idCourse) throws Error {
+	public void removeEnrolledCourse(String idCourse) throws NoEnrolledCourseWithThisId,NoEnrolledCourseError{
 		if (enrolledCourse.isEmpty()) {
 			throw new NoEnrolledCourseError();
 		} else {
-			int index = 0;
-			while (enrolledCourse.get(index) != null) {
-				if (idCourse == enrolledCourse.get(index).getId()) {
-					enrolledCourse.remove(index);
-					return;
+			try {
+				int index = 0;
+				while (enrolledCourse.get(index) != null) {
+					if (idCourse == enrolledCourse.get(index).getId()) {
+						enrolledCourse.remove(index);
+						return;
+					}
+					index++;
 				}
-				index++;
+			} catch (IndexOutOfBoundsException e) {
+				throw new NoEnrolledCourseWithThisId();
 			}
 		}
 	}
