@@ -91,18 +91,23 @@ public class Course {
 		return studentsCourseRequest;
 	}
 
-	public void removeCourseRequestFromStudent(String idStudentCourseToRemove) throws NoCourseRequestActiveForThisStudent{
-		try {
-			int index = 0;
-			while (studentsCourseRequest.get(index) != null) {
-				if (studentsCourseRequest.get(index).getIdStudent() == idStudentCourseToRemove) {
-					studentsCourseRequest.remove(index);
-					return;
+	public void removeCourseRequestFromStudent(String idStudentCourseToRemove)
+			throws NoCourseRequestActiveForThisStudent {
+		if (studentsCourseRequest.isEmpty()) {
+			throw new NoStudentCourseRequestError();
+		} else {
+			try {
+				int index = 0;
+				while (studentsCourseRequest.get(index) != null) {
+					if (studentsCourseRequest.get(index).getIdStudent() == idStudentCourseToRemove) {
+						studentsCourseRequest.remove(index);
+						return;
+					}
+					index++;
 				}
-				index++;
+			} catch (IndexOutOfBoundsException e) {
+				throw new NoCourseRequestActiveForThisStudent();
 			}
-		} catch (IndexOutOfBoundsException e) {
-			throw new NoCourseRequestActiveForThisStudent();
 		}
 	}
 

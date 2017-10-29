@@ -145,6 +145,13 @@ public class CourseTest {
 		assertStudentCourseRequest(1);
 	}
 
+	@Test(expected = NoStudentCourseRequestError.class)
+	public void testRemoveCourseRequestWhenListIsEmptyThrowError() {
+		course.removeCourseRequestFromStudent("idTestStudent");
+		
+		assertStudentCourseRequest(0);
+	}
+
 	private CourseRequest createNewTestCourseRequest(Student student) {
 		return new CourseRequest(student, course);
 	}
