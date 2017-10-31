@@ -80,7 +80,6 @@ public class Course {
 			} catch (IndexOutOfBoundsException e) {
 				throw new NoEnrolledStudentWithThisId();
 			}
-
 		}
 	}
 
