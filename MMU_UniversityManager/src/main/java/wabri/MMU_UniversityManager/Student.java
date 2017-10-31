@@ -86,7 +86,7 @@ public class Student {
 				while (enrolledCourse.get(index) != null) {
 					if (idCourse == enrolledCourse.get(index).getId()) {
 						enrolledCourse.remove(index);
-						return;
+						break;
 					}
 					index++;
 				}
