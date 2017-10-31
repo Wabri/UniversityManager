@@ -38,7 +38,8 @@ public class StudentTest {
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) {
 				Object[] args = invocation.getArguments();
-				tutorsRequested.add(new TutorRequest(universityDB.findTeacherWithId((String)args[1]), ((Student)args[0])));
+				tutorsRequested
+						.add(new TutorRequest(universityDB.findTeacherWithId((String) args[1]), ((Student) args[0])));
 				return null;
 			}
 		}).doThrow(RequestAlreadyActive.class).when(universityDB).studentRequestTutor(student, teacher.getId());
@@ -153,6 +154,32 @@ public class StudentTest {
 		assertTutorRemoveRequest();
 	}
 
+	@Test
+	public void testSendTutorRequestIfSuccessSendMailToTeacher() {
+		assertTutorRequest(teacher.getId());
+
+		verify(mailService, times(1)).sendMail(student, teacher);
+	}
+
+	@Test(expected = IllegalTutorRequest.class)
+	public void testSendTutorRequestWhenIdTeacherWasWrong() {
+		String idTeacher = "idWrongTutor";
+
+		assertWrongTutorRequest(idTeacher);
+	}
+
+	@Test
+	public void testSendTutorRequestWhenIdTeacherWasWrongDoNotUpdateTutorOfStudent() {
+		String idTeacher = "idWrongTutor";
+
+		try {
+			assertWrongTutorRequest(idTeacher);
+		} catch (IllegalTutorRequest e) {
+			assertEquals(null, student.getIdTutor());
+			verify(mailService, times(0)).sendMail(any(Student.class), any(Teacher.class));
+		}
+	}
+
 	@Test(expected = NoTutorAssignedError.class)
 	public void testSendTutorRemoveToDBWhenNoTutorIsAssigned() {
 		assertTutorRemoveRequest();
@@ -206,10 +233,16 @@ public class StudentTest {
 		assertEquals(0, student.getEnrolledCourse().size());
 	}
 
-	@Test (expected = RequestAlreadyActive.class)
+	@Test(expected = RequestAlreadyActive.class)
 	public void testSendTutorRequestWhenAlreadyStudentRequestOne() {
 		student.sendTutorRequest(teacher.getId());
 		student.sendTutorRequest(teacher.getId());
+	}
+
+	private void assertWrongTutorRequest(String idTeacher) throws IllegalTutorRequest {
+		doThrow(NoTeacherFound.class).when(universityDB).findTeacherWithId(idTeacher);
+
+		student.sendTutorRequest(idTeacher);
 	}
 
 	private void universityDBDoAnswerWithCourseRemoveRequest(String idCourseToRemove) {
@@ -241,7 +274,7 @@ public class StudentTest {
 
 	private void assertTutorRequest(String expected) {
 		student.sendTutorRequest(teacher.getId());
-		
+
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) {
 				Object[] args = invocation.getArguments();
@@ -251,7 +284,7 @@ public class StudentTest {
 				return null;
 			}
 		}).when(universityDB).createTutoring(tutorsRequested.get(0));
-		
+
 		universityDB.createTutoring(tutorsRequested.get(0));
 
 		assertEquals(expected, student.getIdTutor());

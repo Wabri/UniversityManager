@@ -77,7 +77,7 @@ public class Student {
 		enrolledCourse.add(course);
 	}
 
-	public void removeEnrolledCourse(String idCourse) throws NoEnrolledCourseWithThisId,NoEnrolledCourseError{
+	public void removeEnrolledCourse(String idCourse) throws NoEnrolledCourseWithThisId, NoEnrolledCourseError {
 		if (enrolledCourse.isEmpty()) {
 			throw new NoEnrolledCourseError();
 		} else {
@@ -100,7 +100,12 @@ public class Student {
 		if (this.getIdTutor() != null) {
 			throw new IllegalTutorRequest();
 		}
-		universityDB.studentRequestTutor(this, idTeacher);			
+		try {
+			universityDB.studentRequestTutor(this, idTeacher);
+			mailService.sendMail(this, universityDB.findTeacherWithId(idTeacher));
+		} catch (NoTeacherFound e) {
+			throw new IllegalTutorRequest();
+		}
 	}
 
 	public void sendTutorRemoveRequest() throws NoTutorAssignedError {
@@ -111,7 +116,7 @@ public class Student {
 	}
 
 	public void requestEnrollingCourse(String idCourse) {
-		universityDB.studentRequestCourse(this,idCourse);
+		universityDB.studentRequestCourse(this, idCourse);
 	}
 
 	public void requestRemoveEnrolledCourse(String idCourse) {
