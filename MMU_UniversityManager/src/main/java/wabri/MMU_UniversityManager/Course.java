@@ -121,8 +121,22 @@ public class Course {
 		return coursesAttendence;
 	}
 
-	public void removeCourseAttendence(String idStudentToRemove) {
-		coursesAttendence.remove(0);
+	public void removeCourseAttendence(String idStudentToRemove) throws NoCourseAttendenceError {
+		if (coursesAttendence.isEmpty()) {
+			throw new NoCourseAttendenceError();
+		} else {
+			try {
+				int index = 0;
+				while (coursesAttendence.get(index) != null) {
+					if (coursesAttendence.get(index).getIdStudent() == idStudentToRemove) {
+						coursesAttendence.remove(index);
+						return;
+					}
+				}
+			} catch (IndexOutOfBoundsException e) {
+				throw new NoCourseAttendenceError();
+			}
+		}
 	}
 
 }

@@ -3,9 +3,6 @@ package wabri.MMU_UniversityManager;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -148,14 +145,14 @@ public class CourseTest {
 	@Test(expected = NoStudentCourseRequestError.class)
 	public void testRemoveCourseRequestWhenListIsEmptyThrowError() {
 		course.removeCourseRequestFromStudent("idTestStudent");
-		
+
 		assertStudentCourseRequest(0);
 	}
-	
+
 	@Test
 	public void testAddCoursesAttendence() {
 		course.addCourseAttendence(createNewTestCourseAttendence(createNewTestStudent("idStudentTest")));
-		
+
 		assertCourseAttendence(1);
 	}
 
@@ -163,20 +160,35 @@ public class CourseTest {
 	public void testNewCourseHasCoursesAttendenceEmpty() {
 		assertCourseAttendence(0);
 	}
-	
+
 	@Test
 	public void testRemoveCourseAttendence() {
 		String idStudent = "idStudentTest";
 		course.addCourseAttendence(createNewTestCourseAttendence(createNewTestStudent(idStudent)));
 		course.removeCourseAttendence(idStudent);
+
+		assertCourseAttendence(0);
+	}
+
+	@Test (expected = NoCourseAttendenceError.class)
+	public void testRemoveCourseAttendenceWhenListIsEmptyThrowError() {
+		course.removeCourseAttendence("idStudentTest");
 		
 		assertCourseAttendence(0);
+	}
+	
+	@Test (expected = NoCourseAttendenceError.class)
+	public void testRemoveCourseAttendenceWhenIdStudentWasWrong() {
+		course.addCourseAttendence(createNewTestCourseAttendence(createNewTestStudent("idStudentTest")));
+		course.removeCourseAttendence("idStudentWrong");
+		
+		assertCourseAttendence(1);
 	}
 
 	private void assertCourseAttendence(int expected) {
 		assertEquals(expected, course.getCoursesAttendence().size());
 	}
-	
+
 	private CourseAttendence createNewTestCourseAttendence(Student student) {
 		return new CourseAttendence(student, course);
 	}
