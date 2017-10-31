@@ -206,7 +206,7 @@ public class CourseTest {
 	}
 
 	private Student createNewTestStudent(String idStudent) {
-		return new Student("nameTestStudent", "surnameTestStudent", idStudent, mailService);
+		return new Student("nameTestStudent", "surnameTestStudent", idStudent, mailService, null);
 	}
 
 	private Course createNewTestCourse(String id, String name, Teacher teacher) {
