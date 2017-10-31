@@ -1,6 +1,9 @@
 package wabri.MMU_UniversityManager;
 
-public class Teacher extends UniversityPerson{
+import java.util.ArrayList;
+import java.util.List;
+
+public class Teacher extends UniversityPerson {
 
 	private String name;
 	private String surname;
@@ -40,7 +43,7 @@ public class Teacher extends UniversityPerson{
 	}
 
 	public void askMail() {
-		if (mail==null) {
+		if (mail == null) {
 			setMail(mailService.getMail(this));
 		}
 	}
