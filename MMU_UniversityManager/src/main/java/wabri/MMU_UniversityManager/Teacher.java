@@ -1,6 +1,6 @@
 package wabri.MMU_UniversityManager;
 
-public class Teacher {
+public class Teacher extends UniversityPerson{
 
 	private String name;
 	private String surname;
