@@ -3,7 +3,7 @@ package wabri.MMU_UniversityManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Teacher {
+public class Teacher extends UniversityPerson{
 
 	private String name;
 	private String surname;
