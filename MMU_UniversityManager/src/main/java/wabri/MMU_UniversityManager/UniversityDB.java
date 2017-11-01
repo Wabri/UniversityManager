@@ -14,4 +14,6 @@ public interface UniversityDB {
 
 	void createTutoring(TutorRequest tutorRequest);
 
+	void createTutorRequest(Teacher teacher, Student student);
+
 }

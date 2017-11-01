@@ -105,6 +105,8 @@ public class Student {
 			mailService.sendMail(this, universityDB.findTeacherWithId(idTeacher), message);
 		} catch (NoTeacherFound e) {
 			throw new IllegalTutorRequest();
+		} catch (TutorRequestAlreadyActive e) {
+			throw e;
 		}
 	}
 
