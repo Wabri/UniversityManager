@@ -96,13 +96,13 @@ public class Student {
 		}
 	}
 
-	public void sendTutorRequest(String idTeacher) throws IllegalTutorRequest {
+	public void sendTutorRequest(String idTeacher, String message) throws IllegalTutorRequest {
 		if (this.getIdTutor() != null) {
 			throw new IllegalTutorRequest();
 		}
 		try {
 			universityDB.studentRequestTutor(this, idTeacher);
-			mailService.sendMail(this, universityDB.findTeacherWithId(idTeacher));
+			mailService.sendMail(this, universityDB.findTeacherWithId(idTeacher), message);
 		} catch (NoTeacherFound e) {
 			throw new IllegalTutorRequest();
 		}
@@ -121,6 +121,10 @@ public class Student {
 
 	public void requestRemoveEnrolledCourse(String idCourse) {
 		universityDB.studentRemoveCourse(this, idCourse);
+	}
+
+	public void sendMailToTutor(String message) {
+		mailService.sendMail(this, universityDB.findTeacherWithId(idTutor), message);
 	}
 
 }

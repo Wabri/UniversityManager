@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -136,7 +137,7 @@ public class StudentTest {
 
 	@Test
 	public void testSendTutorRequestToDB() {
-		assertTutorRequest(teacher.getId());
+		assertTutorRequest(teacher.getId(), "");
 	}
 
 	@Test(expected = IllegalTutorRequest.class)
@@ -144,7 +145,7 @@ public class StudentTest {
 		String idTutor = "idTutorTest";
 		student.setIdTutor(idTutor);
 
-		assertTutorRequest(idTutor);
+		assertTutorRequest(idTutor, "");
 	}
 
 	@Test
@@ -156,9 +157,18 @@ public class StudentTest {
 
 	@Test
 	public void testSendTutorRequestIfSuccessSendMailToTeacher() {
-		assertTutorRequest(teacher.getId());
+		String message = "mail";
+		assertTutorRequest(teacher.getId(), message);
 
-		verify(mailService, times(1)).sendMail(student, teacher);
+		ArgumentCaptor<String> mailCaptor = ArgumentCaptor.forClass(String.class);
+		ArgumentCaptor<Student> studentCaptor = ArgumentCaptor.forClass(Student.class);
+		ArgumentCaptor<Teacher> teacherCaptor = ArgumentCaptor.forClass(Teacher.class);
+
+		verify(mailService, times(1)).sendMail(studentCaptor.capture(), teacherCaptor.capture(), mailCaptor.capture());
+
+		assertEquals(message, mailCaptor.getAllValues().get(0));
+		assertEquals(student, studentCaptor.getAllValues().get(0));
+		assertEquals(teacher, teacherCaptor.getAllValues().get(0));
 	}
 
 	@Test(expected = IllegalTutorRequest.class)
@@ -176,8 +186,30 @@ public class StudentTest {
 			assertWrongTutorRequest(idTeacher);
 		} catch (IllegalTutorRequest e) {
 			assertEquals(null, student.getIdTutor());
-			verify(mailService, times(0)).sendMail(any(Student.class), any(Teacher.class));
+			verify(mailService, times(0)).sendMail(any(Student.class), any(Teacher.class), anyString());
 		}
+	}
+
+	@Test
+	public void testSendMailToTutor() {
+		student.setIdTutor(teacher.getId());
+		student.sendMailToTutor("");
+
+		verify(mailService, times(1)).sendMail(student, teacher, "");
+	}
+
+	@Test
+	public void testSendMailToTutorMustHaveAMessage() {
+		String mail = "Mail";
+
+		student.setIdTutor(teacher.getId());
+		student.sendMailToTutor(mail);
+
+		ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
+
+		verify(mailService, times(1)).sendMail(any(Student.class), any(Teacher.class), messageCaptor.capture());
+
+		assertEquals(mail, messageCaptor.getAllValues().get(0));
 	}
 
 	@Test(expected = NoTutorAssignedError.class)
@@ -235,14 +267,14 @@ public class StudentTest {
 
 	@Test(expected = RequestAlreadyActive.class)
 	public void testSendTutorRequestWhenAlreadyStudentRequestOne() {
-		student.sendTutorRequest(teacher.getId());
-		student.sendTutorRequest(teacher.getId());
+		student.sendTutorRequest(teacher.getId(), "");
+		student.sendTutorRequest(teacher.getId(), "");
 	}
 
 	private void assertWrongTutorRequest(String idTeacher) throws IllegalTutorRequest {
 		doThrow(NoTeacherFound.class).when(universityDB).findTeacherWithId(idTeacher);
 
-		student.sendTutorRequest(idTeacher);
+		student.sendTutorRequest(idTeacher, "");
 	}
 
 	private void universityDBDoAnswerWithCourseRemoveRequest(String idCourseToRemove) {
@@ -272,8 +304,8 @@ public class StudentTest {
 		assertEquals(null, student.getIdTutor());
 	}
 
-	private void assertTutorRequest(String expected) {
-		student.sendTutorRequest(teacher.getId());
+	private void assertTutorRequest(String expected, String message) {
+		student.sendTutorRequest(teacher.getId(), message);
 
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) {
