@@ -121,17 +121,24 @@ public class Teacher {
 		if (tutoredStudents.size() >= 3) {
 			throw new OutOfLimitTutoredStudents();
 		} else {
-			try {
+	try {
 				int index = 0;
 				while (requestedTutor.get(index) != null) {
 					if (requestedTutor.get(index).getIdStudent() == idStudent) {
 						this.addTutoredStudent(getTutorRequest().get(index).getStudent());
+            mailService.sendMail(this, tutorRequest.getStudent(), "Tutoring accepted");
 						break;
 					}
 				}
 			} catch (IndexOutOfBoundsException e) {
 				throw new NoTutorRequestError();
 			}
+		}
+	}
+
+	public void sendMailToTutoredStudents(String mail) {
+		for (Student student : tutoredStudents) {
+			mailService.sendMail(this, student, mail);
 		}
 	}
 

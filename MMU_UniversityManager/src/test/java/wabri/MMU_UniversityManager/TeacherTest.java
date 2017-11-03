@@ -5,6 +5,8 @@ import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 
 public class TeacherTest {
 
@@ -143,6 +145,42 @@ public class TeacherTest {
 		teacher.addTutoredStudent(creteNewStudent("id2"));
 
 		assertAcceptTutorRequest("id0", "id3");
+	}
+
+	@Test
+	public void testAfterAcceptedRequestSendMail() {
+		String idStudent = "idTestStudent";
+		TutorRequest tutorRequest = createNewTutorRequest(idStudent);
+
+		teacher.addRequestedTutoring(tutorRequest);
+		teacher.acceptTutorRequest(idStudent);
+
+		verify(mailService, times(1)).sendMail(teacher, tutorRequest.getStudent(), "Tutoring accepted");
+	}
+
+	@Test
+	public void testSendMailToAllTutoredStudents() {
+		ArgumentCaptor<String> captorMail = ArgumentCaptor.forClass(String.class);
+		ArgumentCaptor<Student> captorStudent = ArgumentCaptor.forClass(Student.class);
+		String mail = "testMail";
+		String idStudent0 = "idTestStudent0";
+		String idStudent1 = "idTestStudent1";
+		String idStudent2 = "idTestStudent2";
+		
+		teacher.addTutoredStudent(creteNewStudent(idStudent0));
+		teacher.addTutoredStudent(creteNewStudent(idStudent1));
+		teacher.addTutoredStudent(creteNewStudent(idStudent2));
+		
+		teacher.sendMailToTutoredStudents(mail);
+
+		verify(mailService, times(3)).sendMail(any(Teacher.class), captorStudent.capture(), captorMail.capture());
+		
+		assertEquals(captorMail.getAllValues().get(0), mail);
+		assertEquals(captorMail.getAllValues().get(1), mail);
+		assertEquals(captorMail.getAllValues().get(2), mail);
+		assertEquals(captorStudent.getAllValues().get(0).getId(), idStudent0);
+		assertEquals(captorStudent.getAllValues().get(1).getId(), idStudent1);
+		assertEquals(captorStudent.getAllValues().get(2).getId(), idStudent2);
 	}
 
 	private void assertAcceptTutorRequest(String expected, String accept) {
