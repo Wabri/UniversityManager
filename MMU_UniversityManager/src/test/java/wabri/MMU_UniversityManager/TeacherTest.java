@@ -6,18 +6,19 @@ import static org.mockito.Mockito.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 
 public class TeacherTest {
 
 	Teacher teacher;
 	private MailService mailService;
 	private Course course;
+	private UniversityDB universityDB;
 
 	@Before
 	public void init() {
 		course = createNewCourse();
 		mailService = mock(MailService.class);
+		universityDB = mock(UniversityDB.class);
 		teacher = createNewTestTeacher("NameTest", "SurnameTest", "ID0");
 
 		when(mailService.getMail(teacher)).thenReturn("Mail");
@@ -198,7 +199,7 @@ public class TeacherTest {
 	}
 
 	private Course createNewCourse() {
-		return new Course("idCourseTest", "nameCourseTest", teacher,mailService);
+		return new Course("idCourseTest", "nameCourseTest", teacher,mailService,universityDB);
 	}
 
 	private void assertMailTeacher(String expected) {
