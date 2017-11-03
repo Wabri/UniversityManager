@@ -145,6 +145,17 @@ public class TeacherTest {
 		assertAcceptTutorRequest("id0", "id3");
 	}
 
+	@Test
+	public void testAfterAcceptedRequestSendMail() {
+		String idStudent = "idTestStudent";
+		TutorRequest tutorRequest = createNewTutorRequest(idStudent);
+		
+		teacher.addRequestedTutoring(tutorRequest);
+		teacher.acceptTutorRequest(idStudent);
+
+		verify(mailService, times(1)).sendMail(teacher, tutorRequest.getStudent(), "Tutoring accepted");
+	}
+
 	private void assertAcceptTutorRequest(String expected, String accept) {
 		teacher.acceptTutorRequest(accept);
 

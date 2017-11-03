@@ -124,6 +124,7 @@ public class Teacher {
 			for (TutorRequest tutorRequest : requestedTutor) {
 				if (tutorRequest.getIdStudent() == idStudent) {
 					this.addTutoredStudent(tutorRequest.getStudent());
+					mailService.sendMail(this, tutorRequest.getStudent(), "Tutoring accepted");
 					return;
 				}
 			}

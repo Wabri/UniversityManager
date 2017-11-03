@@ -6,4 +6,6 @@ public interface MailService {
 
 	String getMail(Teacher teacher);
 
+	void sendMail(Teacher teacher, Student student, String mail);
+
 }
