@@ -1,7 +1,6 @@
 package wabri.MMU_UniversityManager;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Course {
@@ -74,14 +73,13 @@ public class Course {
 				while (enrolledStudents.get(index) != null) {
 					if (enrolledStudents.get(index).getId() == idStudentToRemove) {
 						enrolledStudents.remove(index);
-						return;
+						break;
 					}
 					index++;
 				}
 			} catch (IndexOutOfBoundsException e) {
 				throw new NoEnrolledStudentWithThisId();
 			}
-
 		}
 	}
 
@@ -103,7 +101,7 @@ public class Course {
 				while (studentsCourseRequest.get(index) != null) {
 					if (studentsCourseRequest.get(index).getIdStudent() == idStudentCourseToRemove) {
 						studentsCourseRequest.remove(index);
-						return;
+						break;
 					}
 					index++;
 				}
@@ -130,12 +128,14 @@ public class Course {
 				while (coursesAttendence.get(index) != null) {
 					if (coursesAttendence.get(index).getIdStudent() == idStudentToRemove) {
 						coursesAttendence.remove(index);
-						return;
+						break;
 					}
+					index++;
 				}
 			} catch (IndexOutOfBoundsException e) {
 				throw new NoCourseAttendenceError();
 			}
+
 		}
 	}
 
