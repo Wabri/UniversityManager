@@ -132,4 +132,10 @@ public class Teacher {
 		throw new NoTutorRequestError();
 	}
 
+	public void sendMailToTutoredStudents(String mail) {
+		for (Student student : tutoredStudents) {
+			mailService.sendMail(this, student, mail);
+		}
+	}
+
 }
