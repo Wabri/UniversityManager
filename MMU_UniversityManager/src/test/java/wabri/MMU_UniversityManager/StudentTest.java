@@ -39,12 +39,9 @@ public class StudentTest {
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) {
 				Object[] args = invocation.getArguments();
-				TutorRequest tempTutorRequest = new TutorRequest(universityDB.findTeacherWithId((String) args[1]), ((Student) args[0]));
-				if (tutorsRequested.contains(tempTutorRequest)) {
-					throw new TutorRequestAlreadyActive();
-				} else {					
-					tutorsRequested.add(tempTutorRequest);
-				}
+				TutorRequest tempTutorRequest = new TutorRequest(universityDB.findTeacherWithId((String) args[1]),
+						((Student) args[0]));
+				tutorsRequested.add(tempTutorRequest);
 				return null;
 			}
 		}).doThrow(RequestAlreadyActive.class).when(universityDB).studentRequestTutor(student, teacher.getId());
@@ -215,22 +212,24 @@ public class StudentTest {
 
 		assertEquals(mail, messageCaptor.getAllValues().get(0));
 	}
-	
-	@Test(expected = TutorRequestAlreadyActive.class) 
-	  public void testSendTutorRequestThrowErrorIfThereIsSameTutorRequestInDatabase() { 
-	    doAnswer(new Answer<Void>() {
+
+	@Test(expected = RequestAlreadyActive.class)
+	public void testSendTutorRequestThrowErrorIfThereIsSameTutorRequestInDatabase() {
+		doAnswer(new Answer<Void>() {
 			@Override
 			public Void answer(InvocationOnMock invocation) throws Throwable {
 				Object[] args = invocation.getArguments();
-				tutorsRequested.add(new TutorRequest((Teacher)args[0],(Student)args[1]));
+				tutorsRequested.add(new TutorRequest((Teacher) args[0], (Student) args[1]));
 				return null;
 			}
 		}).when(universityDB).createTutorRequest(teacher, student);
+
+		universityDB.createTutorRequest(teacher, student);
 		
-		universityDB.createTutorRequest(teacher, student); 
-	 
-	    student.sendTutorRequest(teacher.getId(), "");
-	  } 
+		doThrow(RequestAlreadyActive.class).when(universityDB).studentRequestTutor(student, teacher.getId());
+
+		student.sendTutorRequest(teacher.getId(), "");
+	}
 
 	@Test(expected = NoTutorAssignedError.class)
 	public void testSendTutorRemoveToDBWhenNoTutorIsAssigned() {
