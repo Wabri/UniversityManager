@@ -353,7 +353,7 @@ public class StudentTest {
 	}
 
 	private Course createTestCourse(String id) {
-		return new Course(id, "NameCourseTest", createTestTeacher("IdTeacherTest"));
+		return new Course(id, "NameCourseTest", createTestTeacher("IdTeacherTest"),mailService);
 	}
 
 	private Teacher createTestTeacher(String idTeacher) {

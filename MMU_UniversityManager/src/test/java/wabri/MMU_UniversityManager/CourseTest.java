@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 public class CourseTest {
 
@@ -14,7 +15,7 @@ public class CourseTest {
 
 	@Before
 	public void init() {
-		teacher = mock(Teacher.class);
+		teacher = createNewTestTeacher("idTeacher");
 		mailService = mock(MailService.class);
 		course = createNewTestCourse("ID", "name", teacher);
 	}
@@ -32,18 +33,12 @@ public class CourseTest {
 
 	@Test
 	public void testMailOfCourseIsTheTeacherMail() {
-		String mail = "MailTest";
-		when(teacher.getMail()).thenReturn(mail);
-
-		assertEquals(mail, course.getMail());
+		assertEquals(teacher.getMail(), course.getMail());
 	}
 
 	@Test
 	public void testCourseHasGetIdTeacher() {
-		String id = "idTeacherTest";
-		when(teacher.getId()).thenReturn(id);
-
-		assertEquals(id, course.getIdTeacher());
+		assertEquals(teacher.getId(), course.getIdTeacher());
 	}
 
 	@Test
@@ -170,19 +165,59 @@ public class CourseTest {
 		assertCourseAttendence(0);
 	}
 
-	@Test (expected = NoCourseAttendenceError.class)
+	@Test(expected = NoCourseAttendenceError.class)
 	public void testRemoveCourseAttendenceWhenListIsEmptyThrowError() {
 		course.removeCourseAttendence("idStudentTest");
-		
+
 		assertCourseAttendence(0);
 	}
-	
-	@Test (expected = NoCourseAttendenceError.class)
+
+	@Test(expected = NoCourseAttendenceError.class)
 	public void testRemoveCourseAttendenceWhenIdStudentWasWrong() {
 		course.addCourseAttendence(createNewTestCourseAttendence(createNewTestStudent("idStudentTest")));
 		course.removeCourseAttendence("idStudentWrong");
-		
+
 		assertCourseAttendence(1);
+	}
+
+	@Test
+	public void testSetNewTeacherToTheCourse() {
+		String idTeacher = "idNewTeacherTest";
+		Teacher newTeacher = createNewTestTeacher(idTeacher);
+
+		course.setTeacher(teacher);
+
+		assertReplacingTeacher(idTeacher, newTeacher);
+	}
+
+	@Test
+	public void testIfReplacingTeacherSuccessSendMailToBothTeacher() {
+		String idTeacher = "idNewTeacherTest";
+		Teacher newTeacher = createNewTestTeacher(idTeacher);
+
+		course.setTeacher(teacher);
+
+		assertReplacingTeacher(idTeacher, newTeacher);
+
+		ArgumentCaptor<Teacher> captorTeacher = ArgumentCaptor.forClass(Teacher.class);
+		ArgumentCaptor<String> captorMail = ArgumentCaptor.forClass(String.class);
+
+		verify(mailService, times(2)).sendMail(any(Course.class), captorTeacher.capture(), captorMail.capture());
+
+		assertEquals(teacher, captorTeacher.getAllValues().get(0));
+		assertEquals(newTeacher, captorTeacher.getAllValues().get(1));
+		assertEquals(newTeacher.getId() + " replaced in course " + course.getId(), captorMail.getAllValues().get(0));
+		assertEquals("You are the new teacher of " + course.getId(), captorMail.getAllValues().get(1));
+	}
+
+	private void assertReplacingTeacher(String idTeacher, Teacher newTeacher) {
+		course.replaceTeacher(newTeacher);
+
+		assertEquals(idTeacher, course.getIdTeacher());
+	}
+
+	private Teacher createNewTestTeacher(String idTeacher) {
+		return new Teacher("nameTeacherTest", "surnameTeacherTest", idTeacher, mailService);
 	}
 
 	private void assertCourseAttendence(int expected) {
@@ -210,7 +245,7 @@ public class CourseTest {
 	}
 
 	private Course createNewTestCourse(String id, String name, Teacher teacher) {
-		return new Course(id, name, teacher);
+		return new Course(id, name, teacher, mailService);
 	}
 
 }

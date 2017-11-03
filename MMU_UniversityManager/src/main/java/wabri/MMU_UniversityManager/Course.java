@@ -11,14 +11,16 @@ public class Course {
 	private List<Student> enrolledStudents;
 	private List<CourseRequest> studentsCourseRequest;
 	private List<CourseAttendence> coursesAttendence;
+	private MailService mailService;
 
-	public Course(String id, String name, Teacher teacher) {
+	public Course(String id, String name, Teacher teacher, MailService mailService) {
 		this.setId(id);
 		this.setName(name);
 		this.setTeacher(teacher);
 		enrolledStudents = new ArrayList<Student>();
 		studentsCourseRequest = new ArrayList<CourseRequest>();
 		coursesAttendence = new ArrayList<CourseAttendence>();
+		this.mailService = mailService;
 	}
 
 	public String getId() {
@@ -137,6 +139,12 @@ public class Course {
 			}
 
 		}
+	}
+
+	public void replaceTeacher(Teacher newTeacher) {
+		mailService.sendMail(this, teacher, newTeacher.getId() + " replaced in course " + getId());
+		setTeacher(newTeacher);
+		mailService.sendMail(this, teacher, "You are the new teacher of " + getId());
 	}
 
 }

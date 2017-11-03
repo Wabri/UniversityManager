@@ -198,7 +198,7 @@ public class TeacherTest {
 	}
 
 	private Course createNewCourse() {
-		return new Course("idCourseTest", "nameCourseTest", teacher);
+		return new Course("idCourseTest", "nameCourseTest", teacher,mailService);
 	}
 
 	private void assertMailTeacher(String expected) {
