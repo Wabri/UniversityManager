@@ -118,7 +118,11 @@ public class Student {
 	}
 
 	public void requestEnrollingCourse(String idCourse) {
-		universityDB.studentRequestCourse(this, idCourse);
+		if (enrolledCourse.contains(universityDB.findCourseWithId(idCourse))) {
+			throw new CourseAttendenceAlreadyActive();
+		} else {			
+			universityDB.studentRequestCourse(this, idCourse);
+		}
 	}
 
 	public void requestRemoveEnrolledCourse(String idCourse) {

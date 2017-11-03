@@ -16,4 +16,6 @@ public interface UniversityDB {
 
 	void createTutorRequest(Teacher teacher, Student student);
 
+	Course findCourseWithId(String idCourse);
+
 }

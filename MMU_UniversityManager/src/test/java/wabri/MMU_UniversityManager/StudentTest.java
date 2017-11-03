@@ -225,10 +225,21 @@ public class StudentTest {
 		}).when(universityDB).createTutorRequest(teacher, student);
 
 		universityDB.createTutorRequest(teacher, student);
-		
+
 		doThrow(RequestAlreadyActive.class).when(universityDB).studentRequestTutor(student, teacher.getId());
 
 		student.sendTutorRequest(teacher.getId(), "");
+	}
+
+	@Test(expected = CourseAttendenceAlreadyActive.class)
+	public void testRequestingEnrolledCourseWhenAlreadyHasSubscribe() {
+		String idCourse = "idTestCourse";
+		course = createTestCourse(idCourse);
+		student.addEnrolledCourse(course);
+		
+		when(universityDB.findCourseWithId(idCourse)).thenReturn(course);
+		
+		student.requestEnrollingCourse(idCourse);
 	}
 
 	@Test(expected = NoTutorAssignedError.class)
