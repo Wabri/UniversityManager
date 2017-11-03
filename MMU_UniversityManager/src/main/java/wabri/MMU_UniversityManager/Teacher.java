@@ -83,7 +83,7 @@ public class Teacher {
 				while (coursesTeach.get(index) != null) {
 					if (coursesTeach.get(index).getId() == idCourse) {
 						coursesTeach.remove(index);
-						return;
+						break;
 					}
 					index++;
 				}
@@ -114,22 +114,26 @@ public class Teacher {
 	}
 
 	public List<TutorRequest> getTutorRequest() {
-		return null;
+		return requestedTutor;
 	}
 
 	public void acceptTutorRequest(String idStudent) throws NoTutorRequestError, OutOfLimitTutoredStudents {
 		if (tutoredStudents.size() >= 3) {
 			throw new OutOfLimitTutoredStudents();
 		} else {
-			for (TutorRequest tutorRequest : requestedTutor) {
-				if (tutorRequest.getIdStudent() == idStudent) {
-					this.addTutoredStudent(tutorRequest.getStudent());
-					mailService.sendMail(this, tutorRequest.getStudent(), "Tutoring accepted");
-					return;
+	try {
+				int index = 0;
+				while (requestedTutor.get(index) != null) {
+					if (requestedTutor.get(index).getIdStudent() == idStudent) {
+						this.addTutoredStudent(getTutorRequest().get(index).getStudent());
+            mailService.sendMail(this, tutorRequest.getStudent(), "Tutoring accepted");
+						break;
+					}
 				}
+			} catch (IndexOutOfBoundsException e) {
+				throw new NoTutorRequestError();
 			}
 		}
-		throw new NoTutorRequestError();
 	}
 
 	public void sendMailToTutoredStudents(String mail) {
