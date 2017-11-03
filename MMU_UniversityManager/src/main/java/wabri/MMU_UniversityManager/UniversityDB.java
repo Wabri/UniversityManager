@@ -18,4 +18,6 @@ public interface UniversityDB {
 
 	Course findCourseWithId(String idCourse);
 
+	void createCourseAttendence(Course course, String idStudent);
+
 }

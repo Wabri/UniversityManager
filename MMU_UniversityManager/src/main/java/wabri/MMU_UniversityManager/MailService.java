@@ -12,4 +12,6 @@ public interface MailService {
 
 	void sendMail(Course course, Teacher teacher, String message);
 
+	void sendMail(Course course, Student student, String message);
+
 }

@@ -12,8 +12,9 @@ public class Course {
 	private List<CourseRequest> studentsCourseRequest;
 	private List<CourseAttendence> coursesAttendence;
 	private MailService mailService;
+	private UniversityDB universityDB;
 
-	public Course(String id, String name, Teacher teacher, MailService mailService) {
+	public Course(String id, String name, Teacher teacher, MailService mailService, UniversityDB universityDB) {
 		this.setId(id);
 		this.setName(name);
 		this.setTeacher(teacher);
@@ -21,6 +22,7 @@ public class Course {
 		studentsCourseRequest = new ArrayList<CourseRequest>();
 		coursesAttendence = new ArrayList<CourseAttendence>();
 		this.mailService = mailService;
+		this.universityDB = universityDB;
 	}
 
 	public String getId() {
@@ -145,6 +147,24 @@ public class Course {
 		mailService.sendMail(this, teacher, newTeacher.getId() + " replaced in course " + getId());
 		setTeacher(newTeacher);
 		mailService.sendMail(this, teacher, "You are the new teacher of " + getId());
+	}
+
+	public void acceptCourseRequestFromStudent(String idStudent) {
+		universityDB.createCourseAttendence(this, idStudent);
+		CourseRequest courseRequest = findCourseRequestWithIdStudent(idStudent);
+		enrolledStudents.add(studentsCourseRequest.get(studentsCourseRequest.indexOf(courseRequest)).getStudent());
+		coursesAttendence.add(new CourseAttendence(courseRequest.getStudent(), this));
+		studentsCourseRequest.remove(courseRequest);
+		mailService.sendMail(this, courseRequest.getStudent(), "accept course request");
+	}
+
+	private CourseRequest findCourseRequestWithIdStudent(String idStudent) {
+		for (CourseRequest courseRequest : studentsCourseRequest) {
+			if (courseRequest.getIdStudent() == idStudent) {
+				return courseRequest;
+			}
+		}
+		return null;
 	}
 
 }

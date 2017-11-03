@@ -12,11 +12,14 @@ public class CourseTest {
 	private Course course;
 	private Teacher teacher;
 	private MailService mailService;
+	private UniversityDB universityDB;
 
 	@Before
 	public void init() {
 		teacher = createNewTestTeacher("idTeacher");
 		mailService = mock(MailService.class);
+		universityDB = mock(UniversityDB.class);
+		
 		course = createNewTestCourse("ID", "name", teacher);
 	}
 
@@ -209,6 +212,32 @@ public class CourseTest {
 		assertEquals(newTeacher.getId() + " replaced in course " + course.getId(), captorMail.getAllValues().get(0));
 		assertEquals("You are the new teacher of " + course.getId(), captorMail.getAllValues().get(1));
 	}
+	
+	@Test
+	public void testAcceptingCourseRequestFromStudent() {
+		String idStudent = "idTestStudent";
+		assertAcceptCourseRequest(createNewTestStudent(idStudent));
+	}
+	
+	@Test
+	public void testSendMailWhenCourseRequestWasAccepted() {
+		Student student = createNewTestStudent("idTestStudent");
+		assertAcceptCourseRequest(student);
+		
+		verify(mailService, times(1)).sendMail(course, student, "accept course request");
+	}
+	
+	private void assertAcceptCourseRequest(Student student) {
+		course.addCourseRequest(createNewTestCourseRequest(student));
+		course.acceptCourseRequestFromStudent(student.getId());
+		
+		assertEquals(1, course.getCoursesAttendence().size());
+		assertEquals(student.getId(), course.getCoursesAttendence().get(0).getIdStudent());
+		assertEquals(course.getId(), course.getCoursesAttendence().get(0).getIdCourse());
+		assertEquals(1, course.getEnrolledStudent().size());
+		assertEquals(student.getId(), course.getEnrolledStudent().get(0).getId());
+		assertEquals(0, course.getStudentsCourseRequest().size());
+	}
 
 	private void assertReplacingTeacher(String idTeacher, Teacher newTeacher) {
 		course.replaceTeacher(newTeacher);
@@ -245,7 +274,7 @@ public class CourseTest {
 	}
 
 	private Course createNewTestCourse(String id, String name, Teacher teacher) {
-		return new Course(id, name, teacher, mailService);
+		return new Course(id, name, teacher, mailService, universityDB);
 	}
 
 }
