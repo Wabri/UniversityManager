@@ -1,5 +1,8 @@
 language: java
 # skip installation step
 install: true
+cache:
+   directories:
+	- $HOME/.m2	
 script:
 - mvn -f MMU_UniversityManager/pom.xml clean verify
