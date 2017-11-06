@@ -1,8 +1,11 @@
 language: java
 # skip installation step
-install: true
+
+install: true	
+
 script:
- - mvn -f MMU_UniversityManager/pom.xml clean verify coveralls:report
+- mvn -f MMU_UniversityManager/pom.xml clean verify -Pjacoco-report coveralls:report
+
 cache:
-  directories:
-  - $HOME/.m2
+directories:
+- $HOME/.m2
