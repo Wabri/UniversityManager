@@ -2,6 +2,11 @@ language: java
 # skip installation step
 install: true
 
+jdk:
+  - oraclejdk8
+  - oraclejdk7
+  - openjdk6
+
 matrix:
   fast_finish: true
   include:
