@@ -16,10 +16,10 @@ script:
  - if [ "$WITH_COVERALLS" == "true" ];
    then
      mvn -f MMU_UniversityManager/pom.xml clean verify -Pjacoco-report coveralls:report;
-   fi
+   fi;
    if [ "$WITH_COVERALLS" == "false" ];
      mvn -f MMU_UniversityManager/pom.xml clean verify;
-   fi
+   fi;
 
 cache:
 directories:
