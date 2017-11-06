@@ -13,13 +13,12 @@ matrix:
       env: WITH_COVERALLS=false
 
 script:
- - if [ "$WITH_COVERALLS" == "true" ];
+ - if [ "$WITH_COVERALLS" == "true" ]
    then
      mvn -f MMU_UniversityManager/pom.xml clean verify -Pjacoco-report coveralls:report;
-   fi;
-   if [ "$WITH_COVERALLS" == "false" ];
+   else
      mvn -f MMU_UniversityManager/pom.xml clean verify;
-   fi;
+   fi
 
 cache:
 directories:
