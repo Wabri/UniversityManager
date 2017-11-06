@@ -4,7 +4,7 @@ language: java
 install: true
 
 script:
-- if ["$WITH_COVERALLS" == "true" ];
+- if [ "$WITH_COVERALLS" == "true" ];
 then 
 mvn -f MMU_UniversityManager/pom.xml clean verify -Pjacoco-report coveralls:report;
 else
@@ -19,6 +19,6 @@ matrix:
 fast_finish: true
 include:
 - jdk: oraclejdk8 
-  env: $WITH_COVERALLS=true
+  env: WITH_COVERALLS=true
 - jdk: oraclejdk7
 - jdk: openjdk6
