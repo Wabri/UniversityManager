@@ -7,12 +7,7 @@ directories:
 - $HOME/.m2
 
 script:
- - if [ "$WITH_COVERALLS" == "true" ]; 
-   then 
-    mvn -f MMU_UniversityManager/pom.xml clean verify -Pjacoco-report coveralls:report; 
-   else 
-    mvn -f MMU_UniversityManager/pom.xml clean verify; 
-   fi
+ - mvn -f MMU_UniversityManager/pom.xml clean verify -Pjacoco-report coveralls:report;
 
 matrix:
   fast_finish: true
