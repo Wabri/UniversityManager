@@ -2,14 +2,6 @@ language: java
 # skip installation step
 install: true
 
-script:
- - if [ "$WITH_COVERALLS" == "true" ];
-   then
-     mvn -f MMU_UniversityManager/pom.xml clean verify -Pjacoco-report coveralls:report;
-   else
-     mvn -f MMU_UniversityManager/pom.xml clean verify;
-   fi
-
 matrix:
   fast_finish: true
   include:
@@ -17,6 +9,14 @@ matrix:
       env: WITH_COVERALLS=true
     - jdk: oraclejdk7
     - jdk: openjdk6
+
+script:
+ - if [ "$WITH_COVERALLS" == "true" ];
+   then
+     mvn -f MMU_UniversityManager/pom.xml clean verify -Pjacoco-report coveralls:report;
+   else
+     mvn -f MMU_UniversityManager/pom.xml clean verify;
+   fi
 
 cache:
 directories:
