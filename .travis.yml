@@ -17,9 +17,7 @@ script:
 matrix:
   fast_finish: true
   include:
-    - jdk: oraclejdk7
-      env: WITH_COVERALLS=false
-    - jdk: openjdk6
-      env: WITH_COVERALLS=false
+    - os: osx
+      osx_image: xcode8
     - jdk: oraclejdk8
       env: WITH_COVERALLS=true
