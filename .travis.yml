@@ -3,3 +3,6 @@ language: java
 install: true
 script:
 - mvn -f MMU_UniversityManager/pom.xml clean verify
+cache:
+  directories:
+  - $HOME/.m2
