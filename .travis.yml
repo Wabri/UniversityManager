@@ -8,7 +8,6 @@ matrix:
     - jdk: oraclejdk8
       env: WITH_COVERALLS=true
     - jdk: oraclejdk7
-      env: WITH_COVERALLS=false
     - jdk: openjdk6
       env: WITH_COVERALLS=false
 
@@ -16,7 +15,8 @@ script:
  - if [ "$WITH_COVERALLS" == "true" ];
    then
      mvn -f MMU_UniversityManager/pom.xml clean verify -Pjacoco-report coveralls:report;
-   else
+   fi
+   if [ "$WITH_COVERALLS" == "false" ];
      mvn -f MMU_UniversityManager/pom.xml clean verify;
    fi
 
