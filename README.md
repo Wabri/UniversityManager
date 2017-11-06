@@ -1,3 +1,2 @@
 # MMU_UniversityManager
-Quello che vogliamo creare è un programma che consenta la gestione di una parte delle 
-componenti di una università.
+[![Coverage Status](https://coveralls.io/repos/github/Wabri/MMU_UniversityManager/badge.svg?branch=master)](https://coveralls.io/github/Wabri/MMU_UniversityManager?branch=master)
