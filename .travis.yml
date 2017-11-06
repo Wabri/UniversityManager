@@ -8,7 +8,9 @@ matrix:
     - jdk: oraclejdk8
       env: WITH_COVERALLS=true
     - jdk: oraclejdk7
+      env: WITH_COVERALLS=false
     - jdk: openjdk6
+      env: WITH_COVERALLS=false
 
 script:
  - if [ "$WITH_COVERALLS" == "true" ];
