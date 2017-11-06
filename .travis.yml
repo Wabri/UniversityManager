@@ -2,4 +2,4 @@ language: java
 # skip installation step
 install: true
 script:
-- mvn -f wabri.MMU_UniversityManager/pom.xml clean verify
+- mvn -f MMU_UniversityManager/pom.xml clean verify
