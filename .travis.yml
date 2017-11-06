@@ -1,17 +1,6 @@
 language: java
 # skip installation step
 
-install: true
-
-cache:
-directories:
-- $HOME/.m2
-
-jdk:
-- oraclejdk8
-- oraclejdk7
-- openjdk8
-
 matrix:
 fast_finish: true
 include:
@@ -19,6 +8,12 @@ include:
 env: WITH_COVERALLS=true
 - jdk: oraclejdk7
 - jdk: openjdk6
+
+install: true
+
+cache:
+directories:
+- $HOME/.m2
 
 script:
 - if ["$WITH_COVERALLS" == "true" ];
