@@ -4,7 +4,7 @@ language: java
 install: true	
 
 script:
-- mvn -f MMU_UniversityManager/pom.xml clean verify -Pjacoco
+- mvn -f MMU_UniversityManager/pom.xml clean verify -Pjacoco-report coveralls:report
 
 cache:
 directories:
