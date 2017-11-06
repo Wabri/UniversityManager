@@ -10,11 +10,6 @@ script:
      mvn -f MMU_UniversityManager/pom.xml clean verify;
    fi
 
-jdk:
-  - oraclejdk8
-  - oraclejdk7
-  - openjdk6
-
 matrix:
   fast_finish: true
   include:
