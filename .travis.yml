@@ -14,3 +14,11 @@ jdk:
 - oraclejdk8
 - oraclejdk7
 - openjdk8
+
+matrix:
+fast_finish: true
+include:
+	- jdk: oraclejdk8
+	  env: WITH_COVERALLS=true
+	- jdk: oraclejdk7
+	- jdk: openjdk6
