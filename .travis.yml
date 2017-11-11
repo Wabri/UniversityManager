@@ -15,4 +15,3 @@ matrix:
     - os: osx
       osx_image: xcode8
     - jdk: oraclejdk8
-      env: WITH_COVERALLS=true
