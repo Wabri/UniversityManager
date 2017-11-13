@@ -6,4 +6,6 @@ public interface Database {
 
 	List<Student> getAllStudentsList();
 
+	Student findStudentById(String idStudent);
+
 }

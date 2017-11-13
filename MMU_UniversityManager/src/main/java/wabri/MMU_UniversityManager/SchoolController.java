@@ -14,4 +14,8 @@ public class SchoolController {
 		return database.getAllStudentsList();
 	}
 
+	public Student getStudentByID(String idStudent) {
+		return database.findStudentById(idStudent);
+	}
+
 }

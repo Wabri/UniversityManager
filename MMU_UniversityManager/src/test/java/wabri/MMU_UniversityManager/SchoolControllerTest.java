@@ -32,14 +32,22 @@ public class SchoolControllerTest {
 	
 	@Test
 	public void testGetAllStudentsWhenThereIsOneStudent() {
-		students.add(newStudentTest());
+		students.add(newStudentTest(""));
 		List<Student> allStudents = schoolController.getAllStudents();
 		verify(database).getAllStudentsList();
 		assertEquals(1, allStudents.size());
 	}
+	
+	@Test
+	public void testGetStudentByIdWhenStudentIsNotThere() {
+		students.add(newStudentTest("idTest"));
+		Student student = schoolController.getStudentByID("idWrong");
+		verify(database).findStudentById("idWrong");
+		assertNull(student);
+	}
 
-	private Student newStudentTest() {
-		return new Student("", "", "", null, null);
+	private Student newStudentTest(String idStudent) {
+		return new Student("", "", idStudent, null, null);
 	}
 
 }
