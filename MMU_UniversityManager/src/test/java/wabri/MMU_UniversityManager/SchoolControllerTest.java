@@ -24,10 +24,22 @@ public class SchoolControllerTest {
 	}
 
 	@Test
-	public void testGetAllStudentWhenThereAreNoStudents() {
+	public void testGetAllStudentsWhenThereAreNoStudents() {
 		List<Student> allStudents = schoolController.getAllStudents();
 		verify(database).getAllStudentsList();
 		assertEquals(0, allStudents.size());
+	}
+	
+	@Test
+	public void testGetAllStudentsWhenThereIsOneStudent() {
+		students.add(newStudentTest());
+		List<Student> allStudents = schoolController.getAllStudents();
+		verify(database).getAllStudentsList();
+		assertEquals(1, allStudents.size());
+	}
+
+	private Student newStudentTest() {
+		return new Student("", "", "", null, null);
 	}
 
 }
