@@ -48,16 +48,27 @@ public class MongoDatabaseWrapperTest {
 	}
 	
 	@Test
-	public void test() {
+	public void testFindStudentByIdNotFound() {
 		addStudentToCollection("1", "first");
 		
 		assertNull(mongoDatabase.findStudentById("2"));
+	}
+	
+	@Test
+	public void testFindStudentByIdFound() {
+		addStudentToCollection("1", "first");
+		addStudentToCollection("2", "second");
+		
+		Student findStudentById = mongoDatabase.findStudentById("2");
+		assertNotNull(findStudentById);
+		assertEquals("2", findStudentById.getId());
+		assertEquals("second", findStudentById.getName());
 	}
 
 	private void addStudentToCollection(String id, String name) {
 		BasicDBObject document = new BasicDBObject();
 		document.put("id", id);
-		document.put("Name", name);
+		document.put("name", name);
 		students.insert(document);
 	}
 
