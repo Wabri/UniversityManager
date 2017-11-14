@@ -46,6 +46,13 @@ public class MongoDatabaseWrapperTest {
 		
 		assertEquals(2, mongoDatabase.getAllStudentsList().size());
 	}
+	
+	@Test
+	public void test() {
+		addStudentToCollection("1", "first");
+		
+		assertNull(mongoDatabase.findStudentById("2"));
+	}
 
 	private void addStudentToCollection(String id, String name) {
 		BasicDBObject document = new BasicDBObject();
