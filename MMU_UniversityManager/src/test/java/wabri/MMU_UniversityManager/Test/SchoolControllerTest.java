@@ -1,4 +1,4 @@
-package wabri.MMU_UniversityManager;
+package wabri.MMU_UniversityManager.Test;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -8,6 +8,10 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import wabri.MMU_UniversityManager.Database;
+import wabri.MMU_UniversityManager.SchoolController;
+import wabri.MMU_UniversityManager.Student;
 
 public class SchoolControllerTest {
 

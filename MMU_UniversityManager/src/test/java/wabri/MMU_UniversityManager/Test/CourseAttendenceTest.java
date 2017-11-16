@@ -1,10 +1,14 @@
-package wabri.MMU_UniversityManager;
+package wabri.MMU_UniversityManager.Test;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import wabri.MMU_UniversityManager.Course;
+import wabri.MMU_UniversityManager.CourseAttendence;
+import wabri.MMU_UniversityManager.Student;
 
 public class CourseAttendenceTest {
 

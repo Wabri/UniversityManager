@@ -1,4 +1,4 @@
-package wabri.MMU_UniversityManager;
+package wabri.MMU_UniversityManager.Test;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -6,6 +6,20 @@ import static org.mockito.Mockito.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+
+import wabri.MMU_UniversityManager.Course;
+import wabri.MMU_UniversityManager.CourseAttendence;
+import wabri.MMU_UniversityManager.CourseAttendenceAlreadyActive;
+import wabri.MMU_UniversityManager.CourseRequest;
+import wabri.MMU_UniversityManager.MailService;
+import wabri.MMU_UniversityManager.NoCourseAttendenceError;
+import wabri.MMU_UniversityManager.NoCourseRequestActiveForThisStudent;
+import wabri.MMU_UniversityManager.NoEnrolledStudentError;
+import wabri.MMU_UniversityManager.NoEnrolledStudentWithThisId;
+import wabri.MMU_UniversityManager.NoStudentCourseRequestError;
+import wabri.MMU_UniversityManager.Student;
+import wabri.MMU_UniversityManager.Teacher;
+import wabri.MMU_UniversityManager.UniversityDB;
 
 public class CourseTest {
 

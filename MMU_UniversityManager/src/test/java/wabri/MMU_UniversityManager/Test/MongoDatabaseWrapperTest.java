@@ -1,4 +1,4 @@
-package wabri.MMU_UniversityManager;
+package wabri.MMU_UniversityManager.Test;
 
 import static org.junit.Assert.*;
 
@@ -13,6 +13,9 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+
+import wabri.MMU_UniversityManager.MongoDatabaseWrapper;
+import wabri.MMU_UniversityManager.Student;
 
 public class MongoDatabaseWrapperTest {
 
