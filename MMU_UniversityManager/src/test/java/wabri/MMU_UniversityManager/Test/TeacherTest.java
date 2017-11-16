@@ -1,4 +1,4 @@
-package wabri.MMU_UniversityManager;
+package wabri.MMU_UniversityManager.Test;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -6,6 +6,17 @@ import static org.mockito.Mockito.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+
+import wabri.MMU_UniversityManager.Course;
+import wabri.MMU_UniversityManager.MailService;
+import wabri.MMU_UniversityManager.NoTeachCourseWithThisId;
+import wabri.MMU_UniversityManager.NoTeachCoursesError;
+import wabri.MMU_UniversityManager.NoTutorRequestError;
+import wabri.MMU_UniversityManager.OutOfLimitTutoredStudents;
+import wabri.MMU_UniversityManager.Student;
+import wabri.MMU_UniversityManager.Teacher;
+import wabri.MMU_UniversityManager.TutorRequest;
+import wabri.MMU_UniversityManager.UniversityDB;
 
 public class TeacherTest {
 
