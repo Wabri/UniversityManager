@@ -42,14 +42,30 @@ public class SchoolControllerIT {
 	
 	@Test
 	public void testGetAllStudentsWhenThereIsOne() {
-		addStudent("id", "name");
+		addStudent("idTest", "nameTest");
 		assertNumberOfStudents(1);
 	}
 
+	@Test
+	public void testGetStudentByIdWhenStudentIsNotThere() {
+		addStudent("idTest", "nameTest");
+		Student student = schoolController.getStudentByID("wrongID");
+		assertNull(student);
+	}
+	
+	@Test
+	public void testGetStudentByIdWhenStudentIsThere() {
+		addStudent("idTest", "nameTest");
+		Student student = schoolController.getStudentByID("idTest");
+		assertNotNull(student);
+		assertEquals("idTest", student.getId());
+		assertEquals("nameTest", student.getName());
+	}
+	
 	private void addStudent(String id, String name) {
 		BasicDBObject newStudent = new BasicDBObject();
-		newStudent.put("idTest", id);
-		newStudent.put("nameTest", name);
+		newStudent.put("id", id);
+		newStudent.put("name", name);
 		students.insert(newStudent);
 	}
 	
