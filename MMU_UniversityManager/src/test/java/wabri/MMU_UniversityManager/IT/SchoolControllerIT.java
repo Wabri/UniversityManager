@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.fakemongo.Fongo;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
@@ -30,14 +31,31 @@ public class SchoolControllerIT {
 		DB db = mongoClient.getDB("school");
 		db.getCollection("student").drop();
 		database = new MongoDatabaseWrapper(mongoClient);
-		students = db.getCollection("students");
+		students = db.getCollection("student");
 		schoolController = new SchoolController(database);
 	}
 
 	@Test
 	public void testGetAllStudentsWhenThereAreNoStudents() {
+		assertNumberOfStudents(0);
+	}
+	
+	@Test
+	public void testGetAllStudentsWhenThereIsOne() {
+		addStudent("id", "name");
+		assertNumberOfStudents(1);
+	}
+
+	private void addStudent(String id, String name) {
+		BasicDBObject newStudent = new BasicDBObject();
+		newStudent.put("idTest", id);
+		newStudent.put("nameTest", name);
+		students.insert(newStudent);
+	}
+	
+	private void assertNumberOfStudents(int expected) {
 		List<Student> allStudents = schoolController.getAllStudents();
-		assertEquals(0, allStudents.size());
+		assertEquals(expected, allStudents.size());
 	}
 
 }
